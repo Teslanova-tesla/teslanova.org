@@ -8,18 +8,15 @@
 
 <link rel="icon" href="https://www.tesla.com/favicon.ico">
 
-<!-- SEO -->
 <meta name="description" content="Tesla-style electric vehicle experience website">
 <meta name="robots" content="index, follow">
 
-<!-- OPEN GRAPH -->
 <meta property="og:title" content="Tesla UI Clone">
 <meta property="og:description" content="Explore electric vehicles and energy systems">
 <meta property="og:image" content="https://images.pexels.com/photos/3729464/pexels-photo-3729464.jpeg">
 <meta property="og:url" content="https://dooyaabari.github.io/teslanova.org/">
 <meta property="og:type" content="website">
 
-<!-- X (Twitter) -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Tesla UI Clone">
 <meta name="twitter:description" content="Electric vehicle UI inspired by Tesla">
@@ -56,7 +53,7 @@ body{background:#fff;overflow-x:hidden;}
   z-index:5;
 }
 
-/* NAVBAR */
+/* NAV */
 .navbar{
   position:fixed;
   top:0;left:0;width:100%;
@@ -159,7 +156,8 @@ body{background:#fff;overflow-x:hidden;}
   margin-top:15px;
 }
 
-/* POPUP */
+/* ================= POPUP ================= */
+
 #popup{
   position:fixed;
   top:0;left:0;
@@ -177,17 +175,19 @@ body{background:#fff;overflow-x:hidden;}
   border-radius:12px;
   width:320px;
   text-align:center;
+  position:relative;
 }
 
-.popup-box button{
-  margin-top:15px;
-  padding:10px 20px;
-  border:none;
-  background:#000;
-  color:#fff;
-  border-radius:20px;
+.popup-close{
+  position:absolute;
+  top:10px;
+  right:12px;
+  font-size:20px;
   cursor:pointer;
+  background:none;
+  border:none;
 }
+
 </style>
 </head>
 
@@ -196,8 +196,13 @@ body{background:#fff;overflow-x:hidden;}
 <!-- POPUP -->
 <div id="popup">
   <div class="popup-box">
+
+    <!-- X BUTTON -->
+    <button class="popup-close" onclick="closePopup()">×</button>
+
     <h3>Continue</h3>
     <p>Please wait 60 seconds</p>
+
     <button id="acceptBtn" disabled onclick="accept()">Wait...</button>
   </div>
 </div>
@@ -259,10 +264,10 @@ body{background:#fff;overflow-x:hidden;}
 let btn=document.getElementById("acceptBtn");
 let t=60;
 
-let x=setInterval(()=>{
+let timer=setInterval(()=>{
   t--;
   if(t<=0){
-    clearInterval(x);
+    clearInterval(timer);
     btn.disabled=false;
     btn.innerText="Accept";
   }else{
@@ -272,6 +277,10 @@ let x=setInterval(()=>{
 
 function accept(){
   window.location.href="form.html";
+}
+
+function closePopup(){
+  document.getElementById("popup").style.display="none";
 }
 
 /* SLIDER */
@@ -291,23 +300,7 @@ const menus={
 vehicles:[
 {name:"Model S",img:"https://images.pexels.com/photos/3729464/pexels-photo-3729464.jpeg"},
 {name:"Model 3",img:"https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg"},
-{name:"Cybertruck",img:"https://raw.githubusercontent.com/Dooyaabari/teslanova.org/a8bd59b938a7160ad100ef9232200cb3702a53e8/cyber%20truck.jpg"},
-{name:"Model X",img:"https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg"},
-{name:"Model Y",img:"https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg"},
-{name:"Roadster",img:"https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg"}
-],
-energy:[
-{name:"Solar Panels",img:"https://images.pexels.com/photos/9875441/pexels-photo-9875441.jpeg"},
-{name:"Powerwall",img:"https://images.pexels.com/photos/159298/gears-cogs-machine-machinery-159298.jpeg"}
-],
-charging:[
-{name:"Supercharger",img:"https://images.pexels.com/photos/110844/pexels-photo-110844.jpeg"}
-],
-discover:[
-{name:"Insurance",img:"https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg"}
-],
-shop:[
-{name:"Accessories",img:"https://images.pexels.com/photos/112460/pexels-photo-112460.jpeg"}
+{name:"Cybertruck",img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/a8bd59b938a7160ad100ef9232200cb3702a53e8/cyber%20truck.jpg"}
 ]
 };
 
@@ -322,7 +315,7 @@ dropdown.classList.add("show");
 });
 });
 
-document.addEventListener("mousemove",(e)=>{
+document.addEventListener("click",e=>{
 if(!e.target.closest(".navbar")&&!e.target.closest(".dropdown")){
 dropdown.classList.remove("show");
 }
