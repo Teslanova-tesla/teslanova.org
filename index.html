@@ -1,0 +1,353 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electric Cars, Solar & Clean Energy | Tesla</title>
+
+<link rel="icon" href="https://www.tesla.com/favicon.ico">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;}
+body{background:#fff;overflow-x:hidden;}
+
+/* HERO */
+.hero{position:relative;height:100vh;overflow:hidden;}
+.slider{position:absolute;width:100%;height:100%;}
+
+.slide{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background-size:cover;
+  background-position:center;
+  opacity:0;
+  transition:1s ease;
+}
+.slide.active{opacity:1;}
+
+/* HERO TEXT */
+.hero-content{
+  position:absolute;
+  top:22%;
+  width:100%;
+  text-align:center;
+  color:#fff;
+  z-index:5;
+}
+
+/* NAVBAR */
+.navbar{
+  position:fixed;
+  top:0;left:0;width:100%;
+  z-index:9999;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 5vw;
+  background:#fff;
+}
+
+.nav-center{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:25px;
+}
+
+.nav-item{cursor:pointer;font-size:14px;}
+
+/* DROPDOWN */
+.dropdown{
+  position:fixed;
+  top:0;left:0;width:100%;
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(-10px);
+  transition:0.35s ease;
+  z-index:9998;
+}
+
+.dropdown.show{
+  opacity:1;
+  visibility:visible;
+  transform:translateY(0);
+  backdrop-filter:blur(25px);
+  background:rgba(245,245,245,0.92);
+  padding-top:90px;
+}
+
+.dropdown-wrapper{padding:40px 5vw;}
+
+.dropdown-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:25px;
+}
+
+.dropdown-item{
+  text-align:center;
+}
+
+.dropdown-item img{
+  width:100%;
+  height:120px;
+  object-fit:contain;
+}
+
+/* CAROUSEL */
+.car-carousel{padding:60px 5vw;}
+.carousel-track{
+  display:flex;
+  gap:16px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+}
+.car-card{
+  flex:0 0 auto;
+  width:300px;
+  border-radius:12px;
+  overflow:hidden;
+  background:#f5f5f5;
+  scroll-snap-align:start;
+}
+.car-card img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+}
+
+/* MAP */
+.map-section{
+  padding:60px 5vw;
+  text-align:center;
+  background:#0b0b0b;
+  color:#fff;
+}
+#map{
+  height:420px;
+  width:100%;
+  border-radius:12px;
+}
+.find-btn{
+  padding:12px 28px;
+  border:none;
+  border-radius:25px;
+  background:#fff;
+  cursor:pointer;
+  margin-top:15px;
+}
+
+/* FOOTER */
+.footer{
+  text-align:center;
+  padding:40px 20px;
+  font-size:12px;
+  color:#666;
+}
+.footer a{
+  color:#666;
+  margin:0 10px;
+  text-decoration:none;
+}
+.footer a:hover{color:#000;}
+</style>
+</head>
+
+<body>
+
+<header class="hero">
+
+<!-- SLIDER -->
+<div class="slider">
+  <div class="slide active" data-title="Model S" style="background-image:url('https://images.pexels.com/photos/3729464/pexels-photo-3729464.jpeg')"></div>
+  <div class="slide" data-title="Model 3" style="background-image:url('https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg')"></div>
+  <div class="slide" data-title="Model X" style="background-image:url('https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg')"></div>
+  <div class="slide" data-title="Cybertruck" style="background-image:url('https://raw.githubusercontent.com/Dooyaabari/teslanova.org/a8bd59b938a7160ad100ef9232200cb3702a53e8/cyber%20truck.jpg')"></div>
+</div>
+
+<div class="hero-content">
+  <h1 id="heroTitle">Model S</h1>
+</div>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="logo">TESLA</div>
+
+  <div class="nav-center">
+    <div class="nav-item" data-menu="vehicles">Vehicles</div>
+    <div class="nav-item" data-menu="energy">Energy</div>
+    <div class="nav-item" data-menu="charging">Charging</div>
+    <div class="nav-item" data-menu="discover">Discover</div>
+    <div class="nav-item" data-menu="shop">Shop</div>
+  </div>
+</div>
+
+<!-- DROPDOWN -->
+<div id="dropdown" class="dropdown">
+  <div id="dropdown-content"></div>
+</div>
+</header>
+
+<!-- CAROUSEL -->
+<section class="car-carousel">
+<h2>Discover Vehicles</h2>
+
+<div class="carousel-track">
+  <div class="car-card">
+    <img src="https://images.pexels.com/photos/3729464/pexels-photo-3729464.jpeg">
+    <h3>Model S</h3>
+  </div>
+
+  <div class="car-card">
+    <img src="https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg">
+    <h3>Model 3</h3>
+  </div>
+
+  <div class="car-card">
+    <img src="https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg">
+    <h3>Model X</h3>
+  </div>
+
+  <div class="car-card">
+    <img src="https://raw.githubusercontent.com/Dooyaabari/teslanova.org/a8bd59b938a7160ad100ef9232200cb3702a53e8/cyber%20truck.jpg">
+    <h3>Cybertruck</h3>
+  </div>
+</div>
+</section>
+
+<!-- MAP -->
+<section class="map-section">
+<h2>Find Your Location</h2>
+<div id="map"></div>
+<button class="find-btn" onclick="findMe()">Find Me</button>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">
+  Tesla © 2026
+  <br><br>
+  <a href="https://dooyaabari.github.io/teslanova.org/">Privacy & Legal</a>
+  <a href="https://dooyaabari.github.io/teslanova.org/">Vehicle Recalls</a>
+  <a href="https://dooyaabari.github.io/teslanova.org/">Contact</a>
+  <a href="https://dooyaabari.github.io/teslanova.org/">News</a>
+  <a href="https://dooyaabari.github.io/teslanova.org/">Get Updates</a>
+  <a href="https://dooyaabari.github.io/teslanova.org/">Locations</a>
+  <a href="https://dooyaabari.github.io/teslanova.org/">Learn</a>
+</div>
+
+<script>
+
+/* SLIDER */
+const slides=document.querySelectorAll(".slide");
+const title=document.getElementById("heroTitle");
+let current=0;
+
+setInterval(()=>{
+  slides[current].classList.remove("active");
+  current=(current+1)%slides.length;
+  slides[current].classList.add("active");
+  title.textContent=slides[current].dataset.title;
+},4000);
+
+/* MENU (RESTORED FULL) */
+const menus={
+vehicles:[
+{name:"Model S",img:"https://images.pexels.com/photos/3729464/pexels-photo-3729464.jpeg"},
+{name:"Model 3",img:"https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg"},
+{name:"Model X",img:"https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg"},
+{name:"Model Y",img:"https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg"},
+{name:"Cybertruck",img:"https://raw.githubusercontent.com/Dooyaabari/teslanova.org/a8bd59b938a7160ad100ef9232200cb3702a53e8/cyber%20truck.jpg"},
+{name:"Roadster",img:"https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg"}
+],
+energy:[
+{name:"Solar Panels",img:"https://images.pexels.com/photos/9875441/pexels-photo-9875441.jpeg"},
+{name:"Solar Roof",img:"https://images.pexels.com/photos/356036/pexels-photo-356036.jpeg"},
+{name:"Powerwall",img:"https://images.pexels.com/photos/159298/gears-cogs-machine-machinery-159298.jpeg"},
+{name:"Megapack",img:"https://images.pexels.com/photos/159298/gears-cogs-machine-machinery-159298.jpeg"},
+{name:"Grid Services",img:"https://images.pexels.com/photos/159298/gears-cogs-machine-machinery-159298.jpeg"},
+{name:"Energy Software",img:"https://images.pexels.com/photos/356036/pexels-photo-356036.jpeg"}
+],
+charging:[
+{name:"Supercharger",img:"https://images.pexels.com/photos/110844/pexels-photo-110844.jpeg"},
+{name:"Home Charging",img:"https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg"},
+{name:"Wall Connector",img:"https://images.pexels.com/photos/110844/pexels-photo-110844.jpeg"},
+{name:"Charging Map",img:"https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg"},
+{name:"Adapters",img:"https://images.pexels.com/photos/110844/pexels-photo-110844.jpeg"},
+{name:"Charging Tips",img:"https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg"}
+],
+discover:[
+{name:"Demo Drive",img:"https://images.pexels.com/photos/386009/pexels-photo-386009.jpeg"},
+{name:"Insurance",img:"https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg"},
+{name:"Fleet",img:"https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg"},
+{name:"Careers",img:"https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg"},
+{name:"Investors",img:"https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg"},
+{name:"Events",img:"https://images.pexels.com/photos/386009/pexels-photo-386009.jpeg"}
+],
+shop:[
+{name:"Accessories",img:"https://images.pexels.com/photos/112460/pexels-photo-112460.jpeg"},
+{name:"Charging Gear",img:"https://images.pexels.com/photos/110844/pexels-photo-110844.jpeg"},
+{name:"Apparel",img:"https://images.pexels.com/photos/1002649/pexels-photo-1002649.jpeg"},
+{name:"Lifestyle",img:"https://images.pexels.com/photos/1002649/pexels-photo-1002649.jpeg"},
+{name:"Roof Rack",img:"https://images.pexels.com/photos/112460/pexels-photo-112460.jpeg"},
+{name:"Wheels",img:"https://images.pexels.com/photos/112460/pexels-photo-112460.jpeg"}
+]
+};
+
+const navItems=document.querySelectorAll(".nav-item");
+const dropdown=document.getElementById("dropdown");
+const dropdownContent=document.getElementById("dropdown-content");
+
+let hideTimeout;
+
+navItems.forEach(item=>{
+item.addEventListener("mouseenter",()=>{
+clearTimeout(hideTimeout);
+renderMenu(item.dataset.menu);
+dropdown.classList.add("show");
+});
+
+item.addEventListener("mouseleave",()=>{
+hideTimeout=setTimeout(()=>dropdown.classList.remove("show"),300);
+});
+});
+
+dropdown.addEventListener("mouseenter",()=>clearTimeout(hideTimeout));
+dropdown.addEventListener("mouseleave",()=>dropdown.classList.remove("show"));
+
+function renderMenu(type){
+dropdownContent.innerHTML=`
+<div class="dropdown-wrapper">
+<div class="dropdown-grid">
+${menus[type].map(i=>`
+<div class="dropdown-item">
+<img src="${i.img}">
+<h4>${i.name}</h4>
+</div>
+`).join("")}
+</div>
+</div>`;
+}
+
+/* MAP */
+let map=L.map("map").setView([20,0],2);
+L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png").addTo(map);
+
+function findMe(){
+navigator.geolocation.getCurrentPosition(pos=>{
+const lat=pos.coords.latitude;
+const lon=pos.coords.longitude;
+L.marker([lat,lon]).addTo(map);
+map.flyTo([lat,lon],14);
+});
+}
+
+</script>
+
+</body>
+</html>
