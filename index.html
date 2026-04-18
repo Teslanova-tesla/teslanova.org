@@ -3,146 +3,116 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Tesla Clone</title>
+<title>Tesla UI Clone</title>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;}
-body{background:#fff;overflow-x:hidden;}
+body{overflow-x:hidden;background:#fff;}
 
 /* HERO */
 .hero{position:relative;height:100vh;}
-.slider{position:absolute;width:100%;height:100%;}
-
-.slide{
-position:absolute;
-width:100%;height:100%;
-background-size:cover;
-background-position:center;
-opacity:0;
-transition:1s;
-}
+.slider,.slide{position:absolute;width:100%;height:100%;}
+.slide{opacity:0;transition:1s;background-size:cover;background-position:center;}
 .slide.active{opacity:1;}
 
 .hero-content{
-position:absolute;
-top:25%;
-width:100%;
-text-align:center;
-color:#fff;
-z-index:5;
+position:absolute;top:22%;width:100%;
+text-align:center;color:#fff;z-index:5;
 }
 
 /* NAV */
 .navbar{
-position:fixed;
-top:0;width:100%;
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:18px 5vw;
-background:#fff;
-z-index:9999;
+position:fixed;top:0;width:100%;
+display:flex;justify-content:space-between;
+padding:18px 5vw;background:#fff;z-index:9999;
 }
-
 .nav-center{
-position:absolute;
-left:50%;
-transform:translateX(-50%);
-display:flex;
-gap:25px;
+position:absolute;left:50%;transform:translateX(-50%);
+display:flex;gap:25px;
 }
-
 .nav-item{cursor:pointer;font-size:14px;}
 
 /* DROPDOWN */
 .dropdown{
-position:fixed;
-top:0;width:100%;
-opacity:0;
-visibility:hidden;
+position:fixed;top:0;width:100%;
+opacity:0;visibility:hidden;
 transform:translateY(-10px);
-transition:0.3s;
-z-index:9998;
+transition:0.3s;z-index:9998;
 }
-
 .dropdown.show{
-opacity:1;
-visibility:visible;
+opacity:1;visibility:visible;
 transform:translateY(0);
-backdrop-filter:blur(20px);
 background:rgba(245,245,245,0.95);
+backdrop-filter:blur(25px);
 padding-top:90px;
 }
-
 .dropdown-grid{
 display:grid;
 grid-template-columns:repeat(3,1fr);
-gap:20px;
-padding:40px 5vw;
+gap:25px;padding:40px 5vw;
 }
-
 .dropdown-item{text-align:center;}
 .dropdown-item img{
-width:100%;
-height:120px;
-object-fit:contain;
+width:100%;height:120px;object-fit:contain;
 }
 
-/* POPUP */
-#popup{
-position:fixed;
-top:0;left:0;
-width:100%;height:100%;
-display:flex;
-justify-content:center;
-align-items:center;
-background:rgba(0,0,0,0.4);
-backdrop-filter:blur(5px);
-z-index:99999;
+/* CAROUSEL */
+.car-carousel{padding:60px 5vw;}
+.carousel-track{
+display:flex;gap:16px;overflow-x:auto;
 }
-
-.popup-box{
-background:#fff;
-padding:25px;
-border-radius:12px;
-text-align:center;
-width:300px;
-position:relative;
+.car-card{
+width:300px;flex:0 0 auto;
+background:#f5f5f5;border-radius:12px;
+overflow:hidden;
 }
-
-.popup-close{
-position:absolute;
-top:10px;
-right:12px;
-font-size:20px;
-cursor:pointer;
-display:none;
+.car-card img{
+width:100%;height:200px;object-fit:cover;
 }
 
 /* MAP */
 .map-section{
-padding:60px;
-background:#000;
-color:#fff;
-text-align:center;
+padding:60px 5vw;background:#0b0b0b;color:#fff;text-align:center;
 }
-#map{height:400px;border-radius:10px;}
+#map{height:420px;border-radius:12px;}
+.find-btn{
+margin-top:15px;padding:12px 28px;
+border:none;border-radius:25px;
+background:#fff;cursor:pointer;
+}
 
 /* FOOTER */
 .footer{
-text-align:center;
-padding:40px;
-font-size:12px;
-color:#666;
+text-align:center;padding:40px 20px;
+font-size:12px;color:#666;
 }
-.footer a{
-margin:0 10px;
-text-decoration:none;
-color:#666;
+.footer-links{
+display:flex;flex-wrap:wrap;
+justify-content:center;gap:15px;margin-top:10px;
+}
+.footer a{color:#666;text-decoration:none;}
+.footer a:hover{color:#000;}
+
+/* POPUP */
+#popup{
+position:fixed;top:0;left:0;
+width:100%;height:100%;
+display:flex;justify-content:center;align-items:center;
+background:rgba(0,0,0,0.5);
+backdrop-filter:blur(8px);
+z-index:99999;
+}
+.popup-box{
+background:#fff;padding:25px;border-radius:12px;
+width:320px;text-align:center;position:relative;
+}
+.popup-close{
+position:absolute;top:10px;right:12px;
+font-size:20px;border:none;background:none;
+cursor:pointer;display:none;
 }
 </style>
 </head>
@@ -152,11 +122,9 @@ color:#666;
 <!-- POPUP -->
 <div id="popup">
 <div class="popup-box">
-<span class="popup-close" id="closeBtn" onclick="closePopup()">×</span>
-
+<button id="closeBtn" class="popup-close" onclick="closePopup()">×</button>
 <h3>Continue</h3>
-<p id="timerText">Please wait 60s</p>
-
+<p>Please wait 60 seconds</p>
 <button id="acceptBtn" disabled onclick="accept()">Wait...</button>
 </div>
 </div>
@@ -166,7 +134,7 @@ color:#666;
 <div class="slider">
 <div class="slide active" data-title="Model S" style="background-image:url('https://images.pexels.com/photos/3729464/pexels-photo-3729464.jpeg')"></div>
 <div class="slide" data-title="Model 3" style="background-image:url('https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg')"></div>
-<div class="slide" data-title="Cybertruck" style="background-image:url('https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/e21bb10049d77997c693f17e0e1f4aca7af52468/cyber%20truck2.jpg')"></div>
+<div class="slide" data-title="Cybertruck" style="background-image:url('https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/cyber%20truck2.jpg')"></div>
 </div>
 
 <div class="hero-content">
@@ -191,31 +159,51 @@ color:#666;
 
 </header>
 
+<!-- CAROUSEL -->
+<section class="car-carousel">
+<h2>Discover Vehicles</h2>
+
+<div class="carousel-track">
+<div class="car-card"><img src="https://images.pexels.com/photos/3729464/pexels-photo-3729464.jpeg"><h3>Model S</h3></div>
+<div class="car-card"><img src="https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg"><h3>Model 3</h3></div>
+<div class="car-card"><img src="https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg"><h3>Model X</h3></div>
+<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/cyber%20truck.jpg"><h3>Cybertruck</h3></div>
+</div>
+</section>
+
 <!-- MAP -->
 <section class="map-section">
 <h2>Find Your Location</h2>
 <div id="map"></div>
+<button class="find-btn" onclick="findMe()">Find Me</button>
 </section>
 
+<!-- FOOTER -->
 <footer class="footer">
-Tesla © 2026 <br><br>
-<a href="https://teslanova-tesla.github.io/teslanova.org/">Privacy</a>
-<a href="https://teslanova-tesla.github.io/teslanova.org/">Legal</a>
+Tesla © 2026
+<div class="footer-links">
+<a href="https://teslanova-tesla.github.io/teslanova.org/">Privacy & Legal</a>
+<a href="https://teslanova-tesla.github.io/teslanova.org/">Vehicle Recalls</a>
 <a href="https://teslanova-tesla.github.io/teslanova.org/">Contact</a>
+<a href="https://teslanova-tesla.github.io/teslanova.org/">News</a>
+<a href="https://teslanova-tesla.github.io/teslanova.org/">Get Updates</a>
+<a href="https://teslanova-tesla.github.io/teslanova.org/">Locations</a>
+<a href="https://teslanova-tesla.github.io/teslanova.org/">Learn</a>
+</div>
 </footer>
 
 <script>
 
-/* POPUP */
-let time=60;
+/* POPUP TIMER */
+let t=60;
 let btn=document.getElementById("acceptBtn");
 let closeBtn=document.getElementById("closeBtn");
 
 let timer=setInterval(()=>{
-time--;
-btn.innerText="Wait "+time+"s";
+t--;
+btn.innerText="Wait "+t+"s";
 
-if(time<=0){
+if(t<=0){
 clearInterval(timer);
 btn.disabled=false;
 btn.innerText="Accept";
@@ -224,7 +212,7 @@ closeBtn.style.display="block";
 },1000);
 
 function accept(){
-window.location="form.html";
+window.location.href="form.html";
 }
 
 function closePopup(){
@@ -232,8 +220,8 @@ document.getElementById("popup").style.display="none";
 }
 
 /* SLIDER */
-const slides=document.querySelectorAll(".slide");
-const title=document.getElementById("heroTitle");
+let slides=document.querySelectorAll(".slide");
+let title=document.getElementById("heroTitle");
 let i=0;
 
 setInterval(()=>{
@@ -243,34 +231,34 @@ slides[i].classList.add("active");
 title.textContent=slides[i].dataset.title;
 },4000);
 
-/* FULL MENU FIX */
+/* MENU FULL */
 const menus={
 vehicles:[
 {name:"Model S",img:"https://images.pexels.com/photos/3729464/pexels-photo-3729464.jpeg"},
 {name:"Model 3",img:"https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg"},
 {name:"Model X",img:"https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg"},
 {name:"Model Y",img:"https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg"},
-{name:"Cybertruck",img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/e21bb10049d77997c693f17e0e1f4aca7af52468/cyber%20truck.jpg"},
+{name:"Cybertruck",img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/cyber%20truck.jpg"},
 {name:"Roadster",img:"https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg"}
 ],
 energy:[
-{name:"Solar",img:"https://images.pexels.com/photos/9875441/pexels-photo-9875441.jpeg"},
-{name:"Roof",img:"https://images.pexels.com/photos/356036/pexels-photo-356036.jpeg"},
+{name:"Solar Panels",img:"https://images.pexels.com/photos/9875441/pexels-photo-9875441.jpeg"},
+{name:"Solar Roof",img:"https://images.pexels.com/photos/356036/pexels-photo-356036.jpeg"},
 {name:"Powerwall",img:"https://images.pexels.com/photos/159298/gears-cogs-machine-machinery-159298.jpeg"},
-{name:"Grid",img:"https://images.pexels.com/photos/159298/gears-cogs-machine-machinery-159298.jpeg"},
-{name:"Software",img:"https://images.pexels.com/photos/356036/pexels-photo-356036.jpeg"},
-{name:"Energy+",img:"https://images.pexels.com/photos/9875441/pexels-photo-9875441.jpeg"}
+{name:"Megapack",img:"https://images.pexels.com/photos/159298/gears-cogs-machine-machinery-159298.jpeg"},
+{name:"Grid",img:"https://images.pexels.com/photos/356036/pexels-photo-356036.jpeg"},
+{name:"Software",img:"https://images.pexels.com/photos/356036/pexels-photo-356036.jpeg"}
 ],
 charging:[
 {name:"Supercharger",img:"https://images.pexels.com/photos/110844/pexels-photo-110844.jpeg"},
-{name:"Home",img:"https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg"},
-{name:"Wall",img:"https://images.pexels.com/photos/110844/pexels-photo-110844.jpeg"},
+{name:"Home Charging",img:"https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg"},
+{name:"Wall Connector",img:"https://images.pexels.com/photos/110844/pexels-photo-110844.jpeg"},
+{name:"Charging Map",img:"https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg"},
 {name:"Adapters",img:"https://images.pexels.com/photos/110844/pexels-photo-110844.jpeg"},
-{name:"Map",img:"https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg"},
 {name:"Tips",img:"https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg"}
 ],
 discover:[
-{name:"Demo",img:"https://images.pexels.com/photos/386009/pexels-photo-386009.jpeg"},
+{name:"Demo Drive",img:"https://images.pexels.com/photos/386009/pexels-photo-386009.jpeg"},
 {name:"Insurance",img:"https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg"},
 {name:"Fleet",img:"https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg"},
 {name:"Careers",img:"https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg"},
@@ -282,31 +270,28 @@ shop:[
 {name:"Gear",img:"https://images.pexels.com/photos/110844/pexels-photo-110844.jpeg"},
 {name:"Apparel",img:"https://images.pexels.com/photos/1002649/pexels-photo-1002649.jpeg"},
 {name:"Lifestyle",img:"https://images.pexels.com/photos/1002649/pexels-photo-1002649.jpeg"},
-{name:"Rack",img:"https://images.pexels.com/photos/112460/pexels-photo-112460.jpeg"},
+{name:"Roof Rack",img:"https://images.pexels.com/photos/112460/pexels-photo-112460.jpeg"},
 {name:"Wheels",img:"https://images.pexels.com/photos/112460/pexels-photo-112460.jpeg"}
 ]
 };
 
-const navItems=document.querySelectorAll(".nav-item");
-const dropdown=document.getElementById("dropdown");
-const dropdownContent=document.getElementById("dropdown-content");
-
-let hideTimeout;
+let navItems=document.querySelectorAll(".nav-item");
+let dropdown=document.getElementById("dropdown");
+let content=document.getElementById("dropdown-content");
 
 navItems.forEach(item=>{
 item.addEventListener("mouseenter",()=>{
-clearTimeout(hideTimeout);
 renderMenu(item.dataset.menu);
 dropdown.classList.add("show");
 });
 });
 
 dropdown.addEventListener("mouseleave",()=>{
-hideTimeout=setTimeout(()=>dropdown.classList.remove("show"),300);
+dropdown.classList.remove("show");
 });
 
 function renderMenu(type){
-dropdownContent.innerHTML=`
+content.innerHTML=`
 <div class="dropdown-grid">
 ${menus[type].map(i=>`
 <div class="dropdown-item">
@@ -319,6 +304,15 @@ ${menus[type].map(i=>`
 /* MAP */
 let map=L.map("map").setView([20,0],2);
 L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png").addTo(map);
+
+function findMe(){
+navigator.geolocation.getCurrentPosition(pos=>{
+let lat=pos.coords.latitude;
+let lon=pos.coords.longitude;
+L.marker([lat,lon]).addTo(map);
+map.flyTo([lat,lon],14);
+});
+}
 
 </script>
 
