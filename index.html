@@ -3,55 +3,216 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Popup System</title>
+<title>Tesla UI Clone</title>
 
 <style>
-body{
+*{
   margin:0;
+  padding:0;
+  box-sizing:border-box;
   font-family:sans-serif;
 }
 
-/* POPUP BACKDROP */
-#popup{
-  position:fixed;
-  top:0;left:0;
-  width:100%;height:100%;
-  display:none;
-  justify-content:center;
-  align-items:center;
-  background:rgba(0,0,0,0.6);
-  z-index:99999;
+body{
+  background:#fff;
+  overflow-x:hidden;
 }
 
-/* POPUP BOX */
+/* ================= HERO ================= */
+.hero{
+  position:relative;
+  height:100vh;
+  overflow:hidden;
+}
+
+.slider{
+  position:absolute;
+  width:100%;
+  height:100%;
+}
+
+.slide{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background-size:cover;
+  background-position:center;
+  opacity:0;
+  transition:1s ease;
+}
+
+.slide.active{
+  opacity:1;
+}
+
+.hero-content{
+  position:absolute;
+  top:22%;
+  width:100%;
+  text-align:center;
+  color:#fff;
+  z-index:5;
+}
+
+/* ================= NAVBAR ================= */
+.navbar{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  z-index:999;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 5vw;
+  background:#fff;
+}
+
+.nav-center{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:25px;
+}
+
+.nav-item{
+  cursor:pointer;
+  font-size:14px;
+}
+
+/* ================= DROPDOWN ================= */
+.dropdown{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(-10px);
+  transition:0.3s ease;
+  z-index:998;
+}
+
+.dropdown.show{
+  opacity:1;
+  visibility:visible;
+  transform:translateY(0);
+  backdrop-filter:blur(20px);
+  background:rgba(245,245,245,0.92);
+  padding-top:90px;
+}
+
+.dropdown-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:25px;
+  padding:40px 5vw;
+}
+
+.dropdown-item{
+  text-align:center;
+}
+
+.dropdown-item img{
+  width:100%;
+  height:120px;
+  object-fit:contain;
+}
+
+/* ================= CAROUSEL ================= */
+.car-carousel{
+  padding:60px 5vw;
+}
+
+.carousel-track{
+  display:flex;
+  gap:16px;
+  overflow-x:auto;
+}
+
+.car-card{
+  flex:0 0 auto;
+  width:300px;
+  background:#f5f5f5;
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.car-card img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+}
+
+/* ================= MAP ================= */
+.map-section{
+  padding:60px 5vw;
+  text-align:center;
+  background:#0b0b0b;
+  color:#fff;
+}
+
+#map{
+  height:420px;
+  width:100%;
+  border-radius:12px;
+}
+
+/* ================= BACKDROP (BLUR ONLY) ================= */
+#backdrop{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  backdrop-filter: blur(10px);
+  background: rgba(0,0,0,0.15);
+  opacity:0;
+  visibility:hidden;
+  transition:0.3s ease;
+  z-index:1000;
+}
+
+#backdrop.show{
+  opacity:1;
+  visibility:visible;
+}
+
+/* ================= POPUP ================= */
+#popup{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) scale(0.9);
+  opacity:0;
+  visibility:hidden;
+  transition:0.3s ease;
+  z-index:1001;
+}
+
+#popup.show{
+  opacity:1;
+  visibility:visible;
+  transform:translate(-50%,-50%) scale(1);
+}
+
 .popup-box{
   background:#fff;
   padding:25px;
-  width:320px;
   border-radius:12px;
+  width:320px;
   text-align:center;
   position:relative;
-  box-shadow:0 10px 40px rgba(0,0,0,0.2);
 }
 
-/* CLOSE BUTTON */
 #closeBtn{
   position:absolute;
   top:10px;
   right:10px;
-  font-size:18px;
-  cursor:pointer;
-  display:none;
-}
-
-/* BUTTON */
-.popup-box button{
-  margin-top:15px;
-  padding:10px 20px;
   border:none;
-  background:#000;
-  color:#fff;
-  border-radius:20px;
+  background:none;
+  font-size:18px;
   cursor:pointer;
 }
 </style>
@@ -59,81 +220,99 @@ body{
 
 <body>
 
-<!-- ================= POPUP ================= -->
+<!-- ================= POPUP SYSTEM ================= -->
+<div id="backdrop"></div>
+
 <div id="popup">
   <div class="popup-box">
-
-    <span id="closeBtn" onclick="closePopup()">✖</span>
-
-    <h3>Welcome</h3>
-    <p>Please continue to access the site</p>
-
-    <button onclick="accept()">Accept & Continue</button>
-
-    <p id="timerText">Locking for 60 seconds...</p>
-
+    <button id="closeBtn" onclick="closePopup()">✕</button>
+    <h3>Continue</h3>
+    <button onclick="accept()">Accept</button>
   </div>
 </div>
 
+<!-- ================= HERO ================= -->
+<header class="hero">
+
+<div class="slider">
+  <div class="slide active" style="background-image:url('https://images.pexels.com/photos/3729464/pexels-photo-3729464.jpeg')"></div>
+  <div class="slide" style="background-image:url('https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg')"></div>
+</div>
+
+<div class="hero-content">
+  <h1>Model S</h1>
+</div>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="logo">TESLA</div>
+
+  <div class="nav-center">
+    <div class="nav-item">Vehicles</div>
+    <div class="nav-item">Energy</div>
+    <div class="nav-item">Charging</div>
+  </div>
+</div>
+
+<!-- DROPDOWN -->
+<div id="dropdown" class="dropdown">
+  <div class="dropdown-grid">
+    <div class="dropdown-item">
+      <img src="https://images.pexels.com/photos/3729464/pexels-photo-3729464.jpeg">
+      <p>Model S</p>
+    </div>
+  </div>
+</div>
+
+</header>
+
+<!-- CAROUSEL -->
+<section class="car-carousel">
+<h2>Vehicles</h2>
+
+<div class="carousel-track">
+  <div class="car-card">
+    <img src="https://images.pexels.com/photos/3729464/pexels-photo-3729464.jpeg">
+  </div>
+</div>
+</section>
+
+<!-- MAP -->
+<section class="map-section">
+<h2>Map</h2>
+<div id="map"></div>
+</section>
+
+<!-- ================= SCRIPT ================= -->
 <script>
-const popup = document.getElementById("popup");
-const timerText = document.getElementById("timerText");
-const closeBtn = document.getElementById("closeBtn");
 
-let timeLeft = 60;
-let interval;
-let canClose = false;
+/* POPUP LOGIC */
+window.onload = () => {
+  setTimeout(() => {
+    document.getElementById("popup").classList.add("show");
+    document.getElementById("backdrop").classList.add("show");
+  }, 2000);
+};
 
-/* SHOW POPUP */
-function showPopup(){
-  popup.style.display = "flex";
-
-  timeLeft = 60;
-  canClose = false;
-  closeBtn.style.display = "none";
-
-  timerText.innerText = "Locking for 60 seconds...";
-
-  interval = setInterval(()=>{
-    timeLeft--;
-
-    timerText.innerText = "Please wait " + timeLeft + " seconds...";
-
-    if(timeLeft <= 0){
-      clearInterval(interval);
-      canClose = true;
-      closeBtn.style.display = "block";
-      timerText.innerText = "You may now close this popup";
-    }
-  },1000);
-}
-
-/* ACCEPT BUTTON → FORM PAGE */
-function accept(){
-  localStorage.setItem("popupBlockedUntil", Date.now() + (5 * 60 * 1000));
-  window.location.href = "form.html";
-}
-
-/* CLOSE AFTER 60s */
 function closePopup(){
-  if(!canClose) return;
-
-  popup.style.display = "none";
-
-  localStorage.setItem("popupBlockedUntil", Date.now() + (5 * 60 * 1000));
+  document.getElementById("popup").classList.remove("show");
+  document.getElementById("backdrop").classList.remove("show");
 }
 
-/* AUTO CONTROL ON LOAD */
-window.addEventListener("load", ()=>{
+function accept(){
+  closePopup();
+}
 
-  const blockedUntil = localStorage.getItem("popupBlockedUntil");
+/* SLIDER */
+const slides=document.querySelectorAll(".slide");
+let current=0;
 
-  if(blockedUntil && Date.now() < blockedUntil){
-    return; // still in cooldown
-  }
+setInterval(()=>{
+  slides[current].classList.remove("active");
+  current=(current+1)%slides.length;
+  slides[current].classList.add("active");
+},4000);
 
-  showPopup();
-});
 </script>
 
 </body>
