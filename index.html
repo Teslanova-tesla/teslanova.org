@@ -8,20 +8,6 @@
 
 <link rel="icon" href="https://www.tesla.com/favicon.ico">
 
-<meta name="description" content="Tesla-style electric vehicle experience website">
-<meta name="robots" content="index, follow">
-
-<meta property="og:title" content="Tesla UI Clone">
-<meta property="og:description" content="Explore electric vehicles and energy systems">
-<meta property="og:image" content="https://images.pexels.com/photos/3729464/pexels-photo-3729464.jpeg">
-<meta property="og:url" content="https://dooyaabari.github.io/teslanova.org/">
-<meta property="og:type" content="website">
-
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Tesla UI Clone">
-<meta name="twitter:description" content="Electric vehicle UI inspired by Tesla">
-<meta name="twitter:image" content="https://images.pexels.com/photos/3729464/pexels-photo-3729464.jpeg">
-
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
@@ -104,7 +90,6 @@ body{background:#fff;overflow-x:hidden;}
 }
 
 .dropdown-item{text-align:center;}
-
 .dropdown-item img{
   width:100%;
   height:120px;
@@ -156,56 +141,36 @@ body{background:#fff;overflow-x:hidden;}
   margin-top:15px;
 }
 
-/* ================= POPUP ================= */
-
-#popup{
-  position:fixed;
-  top:0;left:0;
-  width:100%;height:100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:99999;
-  background:rgba(0,0,0,0.6);
-}
-
-.popup-box{
-  background:#fff;
-  padding:25px;
-  border-radius:12px;
-  width:320px;
+/* FOOTER */
+.footer{
   text-align:center;
-  position:relative;
+  padding:40px 20px;
+  font-size:12px;
+  color:#666;
+  background:#fff;
 }
 
-.popup-close{
-  position:absolute;
-  top:10px;
-  right:12px;
-  font-size:20px;
-  cursor:pointer;
-  background:none;
-  border:none;
+.footer-links{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:15px;
+  margin-top:10px;
 }
 
+.footer a{
+  color:#666;
+  text-decoration:none;
+  font-size:12px;
+}
+
+.footer a:hover{
+  color:#000;
+}
 </style>
 </head>
 
 <body>
-
-<!-- POPUP -->
-<div id="popup">
-  <div class="popup-box">
-
-    <!-- X BUTTON -->
-    <button class="popup-close" onclick="closePopup()">×</button>
-
-    <h3>Continue</h3>
-    <p>Please wait 60 seconds</p>
-
-    <button id="acceptBtn" disabled onclick="accept()">Wait...</button>
-  </div>
-</div>
 
 <header class="hero">
 
@@ -258,30 +223,22 @@ body{background:#fff;overflow-x:hidden;}
 <button class="find-btn" onclick="findMe()">Find Me</button>
 </section>
 
+<!-- FOOTER -->
+<footer class="footer">
+  Tesla © 2026
+
+  <div class="footer-links">
+    <a href="https://teslanova-tesla.github.io/teslanova.org/">Privacy & Legal</a>
+    <a href="https://teslanova-tesla.github.io/teslanova.org/">Vehicle Recalls</a>
+    <a href="https://teslanova-tesla.github.io/teslanova.org/">Contact</a>
+    <a href="https://teslanova-tesla.github.io/teslanova.org/">News</a>
+    <a href="https://teslanova-tesla.github.io/teslanova.org/">Get Updates</a>
+    <a href="https://teslanova-tesla.github.io/teslanova.org/">Locations</a>
+    <a href="https://teslanova-tesla.github.io/teslanova.org/">Learn</a>
+  </div>
+</footer>
+
 <script>
-
-/* POPUP TIMER */
-let btn=document.getElementById("acceptBtn");
-let t=60;
-
-let timer=setInterval(()=>{
-  t--;
-  if(t<=0){
-    clearInterval(timer);
-    btn.disabled=false;
-    btn.innerText="Accept";
-  }else{
-    btn.innerText="Wait "+t+"s";
-  }
-},1000);
-
-function accept(){
-  window.location.href="form.html";
-}
-
-function closePopup(){
-  document.getElementById("popup").style.display="none";
-}
 
 /* SLIDER */
 const slides=document.querySelectorAll(".slide");
@@ -300,7 +257,7 @@ const menus={
 vehicles:[
 {name:"Model S",img:"https://images.pexels.com/photos/3729464/pexels-photo-3729464.jpeg"},
 {name:"Model 3",img:"https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg"},
-{name:"Cybertruck",img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/a8bd59b938a7160ad100ef9232200cb3702a53e8/cyber%20truck.jpg"}
+{name:"Cybertruck",img:"https://github.com/Teslanova-tesla/teslanova.org/blob/e21bb10049d77997c693f17e0e1f4aca7af52468/cyber%20truck.jpg"}
 ]
 };
 
@@ -329,8 +286,7 @@ ${menus[type].map(i=>`
 <div class="dropdown-item">
 <img src="${i.img}">
 <h4>${i.name}</h4>
-</div>
-`).join("")}
+</div>`).join("")}
 </div>
 </div>`;
 }
