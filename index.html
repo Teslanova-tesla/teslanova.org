@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Electric Cars, Solar & Clean Energy | Tesla</title>
+<title>Tesla</title>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -11,13 +11,8 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;}
 body{overflow-x:hidden;background:#fff;}
-.hero{position:relative;height:100vh;}
-.slider,.slide{position:absolute;width:100%;height:100%;}
-.slide{opacity:0;transition:1s;background-size:cover;background-position:center;}
-.slide.active{opacity:1;}
-.hero-content{position:absolute;top:22%;width:100%;text-align:center;color:#fff;z-index:5;}
 
-/* ✅ FIXED NAVBAR */
+/* NAVBAR FIX */
 .navbar{
 position:fixed;
 top:0;
@@ -33,7 +28,7 @@ z-index:9999;
 .logo{
 font-weight:bold;
 letter-spacing:3px;
-z-index:10000;
+margin-right:40px; /* ✅ pushes it away from menu */
 }
 
 .nav-center{
@@ -53,7 +48,6 @@ top:0;
 width:100%;
 opacity:0;
 visibility:hidden;
-transform:translateY(-10px);
 transition:0.3s;
 z-index:9998;
 }
@@ -61,13 +55,11 @@ z-index:9998;
 .dropdown.show{
 opacity:1;
 visibility:visible;
-transform:translateY(0);
 background:rgba(245,245,245,0.95);
 backdrop-filter:blur(25px);
 padding-top:90px;
 }
 
-/* ✅ FIXED GRID */
 .dropdown-grid{
 display:grid;
 grid-template-columns:repeat(3,1fr);
@@ -84,57 +76,41 @@ height:120px;
 object-fit:contain;
 }
 
-/* OTHER STYLES (UNCHANGED) */
-.car-carousel{padding:60px 5vw;}
-.carousel-track{display:flex;gap:16px;overflow-x:auto;}
-.car-card{width:300px;flex:0 0 auto;background:#f5f5f5;border-radius:12px;overflow:hidden;}
-.car-card img{width:100%;height:200px;object-fit:cover;}
-
-.map-section{padding:60px 5vw;background:#0b0b0b;color:#fff;text-align:center;}
-#map{height:420px;border-radius:12px;}
-
-.find-btn{
-margin-top:15px;
-padding:12px 28px;
-border:none;
-border-radius:25px;
-background:#fff;
-cursor:pointer;
+/* TESTIMONIAL POPUP */
+#testimonialContainer{
+position:fixed;
+left:15px;
+bottom:20px;
+z-index:99990;
 }
 
-.footer{
-text-align:center;
-padding:40px 20px;
-font-size:12px;
-color:#666;
+.testimonial{
+background:#111;
+color:#fff;
+padding:12px;
+border-radius:12px;
+font-size:13px;
+opacity:0;
+transform:scale(0.6) translateY(40px);
+filter:blur(6px);
+transition:0.5s;
 }
 
-.footer-links{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:15px;
-margin-top:10px;
+.testimonial.show{
+opacity:1;
+transform:scale(1) translateY(0);
+filter:blur(0);
 }
 
-.footer a{color:#666;text-decoration:none;}
-.footer a:hover{color:#000;}
+.testimonial.hide{
+opacity:0;
+transform:scale(0.8) translateY(20px);
+filter:blur(4px);
+}
 </style>
 </head>
 
 <body>
-
-<header class="hero">
-
-<div class="slider">
-<div class="slide active" data-title="Model S" style="background-image:url('https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla7.avif')"></div>
-<div class="slide" data-title="Model 3" style="background-image:url('https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla6.avif')"></div>
-<div class="slide" data-title="Cybertruck" style="background-image:url('https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla5.avif')"></div>
-</div>
-
-<div class="hero-content">
-<h1 id="heroTitle">Model S</h1>
-</div>
 
 <div class="navbar">
 <div class="logo">TESLA</div>
@@ -152,97 +128,100 @@ margin-top:10px;
 <div id="dropdown-content"></div>
 </div>
 
-</header>
-
-<section class="car-carousel">
-<h2>Discover Vehicles</h2>
-<div class="carousel-track">
-<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla4.avif"><h3>Model S</h3></div>
-<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla3.avif"><h3>Model 3</h3></div>
-<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla%201.avif"><h3>Model X</h3></div>
-<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/cyber%20truck.jpg"><h3>Cybertruck</h3></div>
-</div>
-</section>
-
-<section class="map-section">
-<h2>Find Your Location</h2>
-<div id="map"></div>
-<button class="find-btn" onclick="findMe()">Find Me</button>
-</section>
-
-<footer class="footer">
-Tesla © 2026
-<div class="footer-links">
-<a href="#">Privacy & Legal</a>
-</div>
-</footer>
+<!-- TESTIMONIAL CONTAINER -->
+<div id="testimonialContainer"></div>
 
 <script>
 
-/* SLIDER */
-let slides=document.querySelectorAll(".slide");
-let title=document.getElementById("heroTitle");
-let i=0;
-
-setInterval(()=>{
-slides[i].classList.remove("active");
-i=(i+1)%slides.length;
-slides[i].classList.add("active");
-title.textContent=slides[i].dataset.title;
-},4000);
-
-/* MAP */
-let map=L.map("map").setView([20,0],2);
-L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png").addTo(map);
-
-function findMe(){
-navigator.geolocation.getCurrentPosition(pos=>{
-let lat=pos.coords.latitude;
-let lon=pos.coords.longitude;
-L.marker([lat,lon]).addTo(map);
-map.flyTo([lat,lon],14);
-});
-}
-
-/* ✅ DROPDOWN FIX */
+/* DROPDOWN FIX */
 const dropdown = document.getElementById("dropdown");
 const content = document.getElementById("dropdown-content");
 
 const menus = {
-  vehicles: [
-    {img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla7.avif", name:"Model S"},
-    {img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla6.avif", name:"Model 3"},
-    {img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/cyber%20truck.jpg", name:"Cybertruck"},
-    {img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla4.avif", name:"Model X"},
-    {img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla3.avif", name:"Model Y"},
-    {img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla5.avif", name:"Roadster"}
-  ]
+vehicles:[
+{img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla7.avif",name:"Model S"},
+{img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla6.avif",name:"Model 3"},
+{img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/cyber%20truck.jpg",name:"Cybertruck"},
+{img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla4.avif",name:"Model X"},
+{img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla3.avif",name:"Model Y"},
+{img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla5.avif",name:"Roadster"}
+]
 };
 
+/* hover + click */
 document.querySelectorAll(".nav-item").forEach(item=>{
-  item.addEventListener("mouseenter", ()=>{
-    const menu = item.dataset.menu;
+item.addEventListener("mouseenter", showMenu);
+item.addEventListener("click", showMenu);
 
-    if(menus[menu]){
-      content.innerHTML = `
-        <div class="dropdown-grid">
-          ${menus[menu].map(m=>`
-            <div class="dropdown-item">
-              <img src="${m.img}">
-              <p>${m.name}</p>
-            </div>
-          `).join("")}
-        </div>
-      `;
-    }
+function showMenu(){
+let menu=item.dataset.menu;
 
-    dropdown.classList.add("show");
-  });
+if(menus[menu]){
+content.innerHTML=`
+<div class="dropdown-grid">
+${menus[menu].map(m=>`
+<div class="dropdown-item">
+<img src="${m.img}">
+<p>${m.name}</p>
+</div>`).join("")}
+</div>`;
+}
+
+dropdown.classList.add("show");
+}
 });
 
-document.addEventListener("click", ()=>{
-  dropdown.classList.remove("show");
+/* close */
+document.addEventListener("click",(e)=>{
+if(!e.target.closest(".nav-item")){
+dropdown.classList.remove("show");
+}
 });
+
+/* TESTIMONIAL SYSTEM */
+const testimonials=[
+"Alex: Loving my Model 3!",
+"Chioma: Smooth driving experience!",
+"Liam: Autopilot is amazing!",
+"Aisha: Charging is easy!",
+"Noah: Super fast performance!",
+"Kofi: Clean energy future!",
+"Sofia: Very comfortable ride!",
+"Raj: Worth every penny!"
+];
+
+let used=[];
+
+function showTestimonial(){
+if(used.length===testimonials.length) used=[];
+
+let available=testimonials.filter(t=>!used.includes(t));
+let text=available[Math.floor(Math.random()*available.length)];
+used.push(text);
+
+let el=document.createElement("div");
+el.className="testimonial";
+el.innerText=text;
+
+document.getElementById("testimonialContainer").appendChild(el);
+
+setTimeout(()=>el.classList.add("show"),100);
+
+setTimeout(()=>{
+el.classList.remove("show");
+el.classList.add("hide");
+setTimeout(()=>el.remove(),500);
+},5000);
+}
+
+/* ONLY AFTER MAIN POPUP */
+setInterval(()=>{
+let popup=document.getElementById("popup");
+if(popup && popup.style.display!=="none") return;
+
+showTestimonial();
+},7000);
+
 </script>
 
 </body>
