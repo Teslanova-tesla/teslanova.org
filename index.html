@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Electric Cars, Solar & Clean Energy | Tesla</title>
-<meta name="google-site-verification" content="IbIfHoFAZBZ3f9fy6dBMH0RUUBTcxoK9-9sZlW_Qgrk" />
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -17,42 +16,113 @@ body{overflow-x:hidden;background:#fff;}
 .slide{opacity:0;transition:1s;background-size:cover;background-position:center;}
 .slide.active{opacity:1;}
 .hero-content{position:absolute;top:22%;width:100%;text-align:center;color:#fff;z-index:5;}
-.navbar{position:fixed;top:0;width:100%;display:flex;justify-content:space-between;padding:18px 5vw;background:#fff;z-index:9999;}
-.nav-center{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:25px;}
+
+/* ✅ FIXED NAVBAR */
+.navbar{
+position:fixed;
+top:0;
+width:100%;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:18px 5vw;
+background:#fff;
+z-index:9999;
+}
+
+.logo{
+font-weight:bold;
+letter-spacing:3px;
+z-index:10000;
+}
+
+.nav-center{
+position:absolute;
+left:50%;
+transform:translateX(-50%);
+display:flex;
+gap:25px;
+}
+
 .nav-item{cursor:pointer;font-size:14px;}
-.dropdown{position:fixed;top:0;width:100%;opacity:0;visibility:hidden;transform:translateY(-10px);transition:0.3s;z-index:9998;}
-.dropdown.show{opacity:1;visibility:visible;transform:translateY(0);background:rgba(245,245,245,0.95);backdrop-filter:blur(25px);padding-top:90px;}
-.dropdown-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;padding:40px 5vw;}
+
+/* DROPDOWN */
+.dropdown{
+position:fixed;
+top:0;
+width:100%;
+opacity:0;
+visibility:hidden;
+transform:translateY(-10px);
+transition:0.3s;
+z-index:9998;
+}
+
+.dropdown.show{
+opacity:1;
+visibility:visible;
+transform:translateY(0);
+background:rgba(245,245,245,0.95);
+backdrop-filter:blur(25px);
+padding-top:90px;
+}
+
+/* ✅ FIXED GRID */
+.dropdown-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:30px;
+padding:40px 5vw;
+max-width:1100px;
+margin:auto;
+}
+
 .dropdown-item{text-align:center;}
-.dropdown-item img{width:100%;height:120px;object-fit:contain;}
+.dropdown-item img{
+width:100%;
+height:120px;
+object-fit:contain;
+}
+
+/* OTHER STYLES (UNCHANGED) */
 .car-carousel{padding:60px 5vw;}
 .carousel-track{display:flex;gap:16px;overflow-x:auto;}
 .car-card{width:300px;flex:0 0 auto;background:#f5f5f5;border-radius:12px;overflow:hidden;}
 .car-card img{width:100%;height:200px;object-fit:cover;}
+
 .map-section{padding:60px 5vw;background:#0b0b0b;color:#fff;text-align:center;}
 #map{height:420px;border-radius:12px;}
-.find-btn{margin-top:15px;padding:12px 28px;border:none;border-radius:25px;background:#fff;cursor:pointer;}
-.footer{text-align:center;padding:40px 20px;font-size:12px;color:#666;}
-.footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:15px;margin-top:10px;}
+
+.find-btn{
+margin-top:15px;
+padding:12px 28px;
+border:none;
+border-radius:25px;
+background:#fff;
+cursor:pointer;
+}
+
+.footer{
+text-align:center;
+padding:40px 20px;
+font-size:12px;
+color:#666;
+}
+
+.footer-links{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:15px;
+margin-top:10px;
+}
+
 .footer a{color:#666;text-decoration:none;}
 .footer a:hover{color:#000;}
-#popup{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);z-index:99999;}
-.popup-box{background:#fff;padding:25px;border-radius:12px;width:320px;text-align:center;position:relative;}
-.popup-close{position:absolute;top:10px;right:12px;font-size:20px;border:none;background:none;cursor:pointer;display:none;}
 </style>
 </head>
 
 <body>
-
-<!-- POPUP -->
-<div id="popup">
-<div class="popup-box">
-<button id="closeBtn" class="popup-close" onclick="closePopup()">×</button>
-<h3>Continue</h3>
-<p>Please wait 60 seconds</p>
-<button id="acceptBtn" disabled onclick="accept()">Wait...</button>
-</div>
-</div>
 
 <header class="hero">
 
@@ -109,47 +179,6 @@ Tesla © 2026
 
 <script>
 
-/* ✅ POPUP CONTROL (20 MINUTES) */
-window.onload = function () {
-  const lastShown = localStorage.getItem("popupTime");
-  const now = new Date().getTime();
-  const delay = 1200000; // 20 minutes
-
-  if (!lastShown || (now - lastShown > delay)) {
-    document.getElementById("popup").style.display = "flex";
-    localStorage.setItem("popupTime", now);
-  } else {
-    document.getElementById("popup").style.display = "none";
-  }
-};
-
-/* POPUP TIMER */
-let t=60;
-let btn=document.getElementById("acceptBtn");
-let closeBtn=document.getElementById("closeBtn");
-
-let timer=setInterval(()=>{
-t--;
-btn.innerText="Wait "+t+"s";
-
-if(t<=0){
-clearInterval(timer);
-btn.disabled=false;
-btn.innerText="Accept";
-closeBtn.style.display="block";
-}
-},1000);
-
-/* ACCEPT */
-function accept(){
-  localStorage.setItem("popupTime", new Date().getTime());
-  window.location.href="form.html";
-}
-
-function closePopup(){
-document.getElementById("popup").style.display="none";
-}
-
 /* SLIDER */
 let slides=document.querySelectorAll(".slide");
 let title=document.getElementById("heroTitle");
@@ -175,6 +204,45 @@ map.flyTo([lat,lon],14);
 });
 }
 
+/* ✅ DROPDOWN FIX */
+const dropdown = document.getElementById("dropdown");
+const content = document.getElementById("dropdown-content");
+
+const menus = {
+  vehicles: [
+    {img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla7.avif", name:"Model S"},
+    {img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla6.avif", name:"Model 3"},
+    {img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/cyber%20truck.jpg", name:"Cybertruck"},
+    {img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla4.avif", name:"Model X"},
+    {img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla3.avif", name:"Model Y"},
+    {img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla5.avif", name:"Roadster"}
+  ]
+};
+
+document.querySelectorAll(".nav-item").forEach(item=>{
+  item.addEventListener("mouseenter", ()=>{
+    const menu = item.dataset.menu;
+
+    if(menus[menu]){
+      content.innerHTML = `
+        <div class="dropdown-grid">
+          ${menus[menu].map(m=>`
+            <div class="dropdown-item">
+              <img src="${m.img}">
+              <p>${m.name}</p>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    dropdown.classList.add("show");
+  });
+});
+
+document.addEventListener("click", ()=>{
+  dropdown.classList.remove("show");
+});
 </script>
 
 </body>
