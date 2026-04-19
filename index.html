@@ -12,7 +12,14 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;}
 body{overflow-x:hidden;background:#fff;}
 
-/* NAVBAR FIX */
+/* HERO SLIDER */
+.hero{position:relative;height:100vh;}
+.slider,.slide{position:absolute;width:100%;height:100%;}
+.slide{opacity:0;transition:1s;background-size:cover;background-position:center;}
+.slide.active{opacity:1;}
+.hero-content{position:absolute;top:22%;width:100%;text-align:center;color:#fff;z-index:5;}
+
+/* NAVBAR FIX (MOBILE SAFE) */
 .navbar{
 position:fixed;
 top:0;
@@ -20,15 +27,17 @@ width:100%;
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:18px 5vw;
+padding:18px 6vw;
 background:#fff;
 z-index:9999;
+gap:30px;
 }
 
 .logo{
 font-weight:bold;
 letter-spacing:3px;
-margin-right:40px; /* ✅ pushes it away from menu */
+margin-right:40px; /* ✅ SPACE FROM MENU */
+flex-shrink:0;
 }
 
 .nav-center{
@@ -37,9 +46,21 @@ left:50%;
 transform:translateX(-50%);
 display:flex;
 gap:25px;
+flex-wrap:nowrap;
 }
 
 .nav-item{cursor:pointer;font-size:14px;}
+
+/* MOBILE FIX */
+@media(max-width:768px){
+.nav-center{
+gap:12px;
+font-size:12px;
+}
+.logo{
+margin-right:20px;
+}
+}
 
 /* DROPDOWN */
 .dropdown{
@@ -63,7 +84,7 @@ padding-top:90px;
 .dropdown-grid{
 display:grid;
 grid-template-columns:repeat(3,1fr);
-gap:30px;
+gap:25px;
 padding:40px 5vw;
 max-width:1100px;
 margin:auto;
@@ -76,12 +97,30 @@ height:120px;
 object-fit:contain;
 }
 
-/* TESTIMONIAL POPUP */
+/* CAROUSEL */
+.car-carousel{padding:60px 5vw;}
+.carousel-track{display:flex;gap:16px;overflow-x:auto;}
+.car-card{width:300px;flex:0 0 auto;background:#f5f5f5;border-radius:12px;overflow:hidden;}
+.car-card img{width:100%;height:200px;object-fit:cover;}
+
+/* MAP */
+.map-section{padding:60px 5vw;background:#0b0b0b;color:#fff;text-align:center;}
+#map{height:420px;border-radius:12px;}
+.find-btn{margin-top:15px;padding:12px 28px;border:none;border-radius:25px;background:#fff;cursor:pointer;}
+
+/* FOOTER */
+.footer{text-align:center;padding:40px 20px;font-size:12px;color:#666;}
+.footer-links{display:flex;justify-content:center;gap:15px;margin-top:10px;}
+
+/* TESTIMONIALS */
 #testimonialContainer{
 position:fixed;
 left:15px;
 bottom:20px;
 z-index:99990;
+display:flex;
+flex-direction:column;
+gap:10px;
 }
 
 .testimonial{
@@ -90,28 +129,41 @@ color:#fff;
 padding:12px;
 border-radius:12px;
 font-size:13px;
+max-width:280px;
 opacity:0;
 transform:scale(0.6) translateY(40px);
-filter:blur(6px);
 transition:0.5s;
 }
 
 .testimonial.show{
 opacity:1;
 transform:scale(1) translateY(0);
-filter:blur(0);
 }
 
 .testimonial.hide{
 opacity:0;
 transform:scale(0.8) translateY(20px);
-filter:blur(4px);
 }
+
 </style>
 </head>
 
 <body>
 
+<!-- HERO -->
+<header class="hero">
+
+<div class="slider">
+<div class="slide active" data-title="Model S" style="background-image:url('https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla7.avif')"></div>
+<div class="slide" data-title="Model 3" style="background-image:url('https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla6.avif')"></div>
+<div class="slide" data-title="Cybertruck" style="background-image:url('https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/cyber%20truck.jpg')"></div>
+</div>
+
+<div class="hero-content">
+<h1 id="heroTitle">Model S</h1>
+</div>
+
+<!-- NAV -->
 <div class="navbar">
 <div class="logo">TESLA</div>
 
@@ -128,32 +180,81 @@ filter:blur(4px);
 <div id="dropdown-content"></div>
 </div>
 
-<!-- TESTIMONIAL CONTAINER -->
+</header>
+
+<!-- CAROUSEL -->
+<section class="car-carousel">
+<h2>Discover Vehicles</h2>
+<div class="carousel-track">
+<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla4.avif"><h3>Model S</h3></div>
+<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla3.avif"><h3>Model 3</h3></div>
+<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla%201.avif"><h3>Model X</h3></div>
+<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/cyber%20truck.jpg"><h3>Cybertruck</h3></div>
+</div>
+</section>
+
+<!-- MAP -->
+<section class="map-section">
+<h2>Find Your Location</h2>
+<div id="map"></div>
+<button class="find-btn" onclick="findMe()">Find Me</button>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+Tesla © 2026
+<div class="footer-links">
+<a href="#">Privacy & Legal</a>
+</div>
+</footer>
+
+<!-- TESTIMONIALS -->
 <div id="testimonialContainer"></div>
 
 <script>
 
-/* DROPDOWN FIX */
-const dropdown = document.getElementById("dropdown");
-const content = document.getElementById("dropdown-content");
+/* SLIDER */
+let slides=document.querySelectorAll(".slide");
+let title=document.getElementById("heroTitle");
+let i=0;
 
-const menus = {
+setInterval(()=>{
+slides[i].classList.remove("active");
+i=(i+1)%slides.length;
+slides[i].classList.add("active");
+title.textContent=slides[i].dataset.title;
+},4000);
+
+/* MAP */
+let map=L.map("map").setView([20,0],2);
+L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png").addTo(map);
+
+function findMe(){
+navigator.geolocation.getCurrentPosition(pos=>{
+let lat=pos.coords.latitude;
+let lon=pos.coords.longitude;
+L.marker([lat,lon]).addTo(map);
+map.flyTo([lat,lon],14);
+});
+}
+
+/* DROPDOWN FIX */
+const dropdown=document.getElementById("dropdown");
+const content=document.getElementById("dropdown-content");
+
+const menus={
 vehicles:[
 {img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla7.avif",name:"Model S"},
 {img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla6.avif",name:"Model 3"},
-{img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/cyber%20truck.jpg",name:"Cybertruck"},
 {img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla4.avif",name:"Model X"},
 {img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla3.avif",name:"Model Y"},
-{img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla5.avif",name:"Roadster"}
+{img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/cyber%20truck.jpg",name:"Cybertruck"},
+{img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla%201.avif",name:"Roadster"}
 ]
 };
 
-/* hover + click */
 document.querySelectorAll(".nav-item").forEach(item=>{
-item.addEventListener("mouseenter", showMenu);
-item.addEventListener("click", showMenu);
-
-function showMenu(){
+item.addEventListener("mouseenter",()=>{
 let menu=item.dataset.menu;
 
 if(menus[menu]){
@@ -168,26 +269,23 @@ ${menus[menu].map(m=>`
 }
 
 dropdown.classList.add("show");
-}
+});
 });
 
-/* close */
 document.addEventListener("click",(e)=>{
 if(!e.target.closest(".nav-item")){
 dropdown.classList.remove("show");
 }
 });
 
-/* TESTIMONIAL SYSTEM */
+/* TESTIMONIALS (REALISTIC FORMAT) */
 const testimonials=[
-"Alex: Loving my Model 3!",
-"Chioma: Smooth driving experience!",
-"Liam: Autopilot is amazing!",
-"Aisha: Charging is easy!",
-"Noah: Super fast performance!",
-"Kofi: Clean energy future!",
-"Sofia: Very comfortable ride!",
-"Raj: Worth every penny!"
+"John Smith bought Model 3 – 'Smooth ride and worth every dollar'",
+"Sarah Johnson invested in Tesla stock – 'Long-term confidence is strong'",
+"Michael Brown purchased Model Y – 'Perfect family car, very efficient'",
+"Ada Okafor bought Cybertruck – 'Bold design, powerful performance'",
+"David Williams invested in TSLA – 'Consistent growth over time'",
+"Emily Davis bought Model S – 'Luxury feel and incredible speed'"
 ];
 
 let used=[];
@@ -214,13 +312,7 @@ setTimeout(()=>el.remove(),500);
 },5000);
 }
 
-/* ONLY AFTER MAIN POPUP */
-setInterval(()=>{
-let popup=document.getElementById("popup");
-if(popup && popup.style.display!=="none") return;
-
-showTestimonial();
-},7000);
+setInterval(showTestimonial,6000);
 
 </script>
 
