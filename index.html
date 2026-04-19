@@ -109,10 +109,16 @@ Tesla © 2026
 
 <script>
 
-/* ✅ FIX: HIDE POPUP AFTER FORM SUBMISSION */
+/* ✅ POPUP CONTROL (20 MINUTES) */
 window.onload = function () {
-  const submitted = localStorage.getItem("formSubmitted");
-  if (submitted === "true") {
+  const lastShown = localStorage.getItem("popupTime");
+  const now = new Date().getTime();
+  const delay = 1200000; // 20 minutes
+
+  if (!lastShown || (now - lastShown > delay)) {
+    document.getElementById("popup").style.display = "flex";
+    localStorage.setItem("popupTime", now);
+  } else {
     document.getElementById("popup").style.display = "none";
   }
 };
@@ -134,8 +140,9 @@ closeBtn.style.display="block";
 }
 },1000);
 
-/* UPDATED ACCEPT */
+/* ACCEPT */
 function accept(){
+  localStorage.setItem("popupTime", new Date().getTime());
   window.location.href="form.html";
 }
 
