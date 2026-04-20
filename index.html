@@ -27,7 +27,7 @@ color:#fff;
 z-index:2;
 }
 
-/* NAVBAR */
+/* NAV */
 .navbar{
 position:fixed;
 top:0;
@@ -69,10 +69,7 @@ backdrop-filter:blur(20px);
 padding-top:90px;
 }
 
-.dropdown.show{
-opacity:1;
-visibility:visible;
-}
+.dropdown.show{opacity:1;visibility:visible;}
 
 .dropdown-grid{
 display:grid;
@@ -103,6 +100,20 @@ font-size:13px;
 .carousel-track{display:flex;gap:16px;overflow-x:auto;}
 .car-card{width:300px;flex:0 0 auto;background:#f5f5f5;border-radius:12px;overflow:hidden;}
 .car-card img{width:100%;height:200px;object-fit:cover;}
+
+/* 🔥 PRODUCT CAROUSEL ANIMATION */
+#productTrack{
+scroll-behavior:smooth;
+animation:scrollLeft 25s linear infinite;
+display:flex;
+gap:16px;
+overflow:hidden;
+}
+
+@keyframes scrollLeft{
+0%{transform:translateX(0);}
+100%{transform:translateX(-50%);}
+}
 
 /* MAP */
 .map-section{padding:60px 5vw;background:#0b0b0b;color:#fff;text-align:center;}
@@ -173,7 +184,7 @@ font-size:13px;
 
 </header>
 
-<!-- CAROUSEL -->
+<!-- ORIGINAL CAROUSEL -->
 <section class="car-carousel">
 <h2>Discover Vehicles</h2>
 <div class="carousel-track">
@@ -181,6 +192,28 @@ font-size:13px;
 <div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla3.avif"></div>
 <div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla%201.avif"></div>
 <div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/cyber%20truck.jpg"></div>
+</div>
+</section>
+
+<!-- 🔥 NEW TESLA PRODUCTS CAROUSEL -->
+<section class="car-carousel">
+<h2>TESLA PRODUCTS</h2>
+
+<div class="carousel-track" id="productTrack">
+
+<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla7.avif"></div>
+<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla6.avif"></div>
+<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/cyber%20truck.jpg"></div>
+
+<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/2c384b3a390ce056172cf7a7f84159967ef2037e/IMG_1243.jpeg"></div>
+<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/2c384b3a390ce056172cf7a7f84159967ef2037e/IMG_1244.jpeg"></div>
+
+<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/0fa4b9d44e3066b9fa8922848850eb8165d38650/IMG_1252.jpeg"></div>
+<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/a29d7782ed7a12e5188402d4abcdd54b7709d3a4/IMG_1253.jpeg"></div>
+
+<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/fd3ce3c2f9c1d8f60b2ba1cd6cece8569115f716/IMG_1249.jpeg"></div>
+<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/fd3ce3c2f9c1d8f60b2ba1cd6cece8569115f716/IMG_1241.jpeg"></div>
+
 </div>
 </section>
 
