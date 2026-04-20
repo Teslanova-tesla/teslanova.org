@@ -19,7 +19,7 @@ body{overflow-x:hidden;background:#fff;}
 .slide.active{opacity:1;}
 .hero-content{position:absolute;top:22%;width:100%;text-align:center;color:#fff;z-index:5;}
 
-/* NAVBAR */
+/* NAVBAR (highest priority UI) */
 .navbar{
 position:fixed;
 top:0;
@@ -29,7 +29,7 @@ align-items:center;
 justify-content:space-between;
 padding:18px 4vw;
 background:#fff;
-z-index:9999;
+z-index:100000; /* 🔥 ABOVE EVERYTHING */
 flex-wrap:wrap;
 }
 
@@ -50,7 +50,7 @@ margin-top:10px;
 
 .nav-item{cursor:pointer;font-size:14px;}
 
-/* DROPDOWN */
+/* DROPDOWN (must stay below navbar but above page) */
 .dropdown{
 position:fixed;
 top:0;
@@ -58,7 +58,8 @@ width:100%;
 opacity:0;
 visibility:hidden;
 transition:0.3s;
-z-index:9998;
+z-index:99990;
+pointer-events:none;
 }
 .dropdown.show{
 opacity:1;
@@ -66,6 +67,7 @@ visibility:visible;
 background:rgba(245,245,245,0.95);
 backdrop-filter:blur(25px);
 padding-top:90px;
+pointer-events:auto;
 }
 .dropdown-grid{
 display:grid;
@@ -98,7 +100,7 @@ object-fit:contain;
 .footer-links{display:flex;justify-content:center;gap:15px;margin-top:10px;}
 
 /* ========================= */
-/* 📲 POPUP STYLE (iPhone-like) */
+/* 📲 POPUPS (FIXED LAYER) */
 /* ========================= */
 
 #toast-container{
@@ -108,7 +110,8 @@ left:20px;
 display:flex;
 flex-direction:column;
 gap:10px;
-z-index:99999;
+z-index:99950; /* 🔥 LOWER THAN NAV + SAFE */
+pointer-events:none; /* 🔥 DOES NOT BLOCK CLICKS */
 }
 
 .toast{
@@ -193,15 +196,12 @@ to{transform:translateX(-120%);opacity:0;}
 <button class="find-btn" onclick="findMe()">Find Me</button>
 </section>
 
-<!-- TOASTS -->
+<!-- POPUPS -->
 <div id="toast-container"></div>
 
 <!-- FOOTER -->
 <footer class="footer">
 Tesla © 2026
-<div class="footer-links">
-<a href="#">Privacy & Legal</a>
-</div>
 </footer>
 
 <script>
@@ -232,19 +232,14 @@ map.flyTo([lat,lon],14);
 });
 }
 
-/* DROPDOWN */
+/* DROPDOWN FIX */
 const dropdown=document.getElementById("dropdown");
 const content=document.getElementById("dropdown-content");
 
-const menus={vehicles:[]};
-
 document.querySelectorAll(".nav-item").forEach(item=>{
-item.addEventListener("mouseenter",showMenu);
-item.addEventListener("click",showMenu);
-
-function showMenu(){
+item.onmouseenter=item.onclick=()=>{
 dropdown.classList.add("show");
-}
+};
 });
 
 document.addEventListener("click",(e)=>{
@@ -254,32 +249,30 @@ dropdown.classList.remove("show");
 });
 
 /* ========================= */
-/* 📲 INFINITE POPUP SYSTEM */
+/* 📲 POPUPS (FIXED FLOW) */
 /* ========================= */
 
 const messages=[
-"John Smith bought Model S and gained Tesla stock profit 🚗📈",
-"Ada Okafor invested in Tesla shares and Cybertruck ⚡",
+"John Smith bought Model S + Tesla stock 🚗📈",
+"Ada Okafor invested in Cybertruck + TSLA shares ⚡",
 "Michael Brown purchased Model 3 + Solar Panels ☀️",
-"David Lee made 3x return from Tesla stock 💰",
-"Sarah Johnson bought Model Y and Powerwall 🔋",
-"Chinedu invested early in Tesla and became shareholder 🌍"
+"David Lee got 3x return from Tesla stock 💰",
+"Sarah Johnson bought Model Y + Powerwall 🔋",
+"Chinedu invested early in Tesla 🌍"
 ];
 
 const container=document.getElementById("toast-container");
 
-const SHOW_TIME = 4000;
-const GAP_TIME = 1200;
+const SHOW_TIME=4000;
+const GAP_TIME=1200;
 
-function sleep(ms){
-return new Promise(r=>setTimeout(r,ms));
-}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 
 async function runToasts(){
 
 while(true){
 
-let msg = messages[Math.floor(Math.random()*messages.length)];
+let msg=messages[Math.floor(Math.random()*messages.length)];
 
 let toast=document.createElement("div");
 toast.className="toast";
@@ -287,17 +280,14 @@ toast.innerHTML=`<b>Tesla Update</b>${msg}`;
 
 container.appendChild(toast);
 
-/* stay visible */
 await sleep(SHOW_TIME);
 
-/* fade out */
 toast.style.animation="fadeOut 0.6s forwards";
 
 await sleep(600);
 
 toast.remove();
 
-/* delay before next */
 await sleep(GAP_TIME);
 }
 
