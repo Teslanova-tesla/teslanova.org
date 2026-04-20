@@ -12,14 +12,40 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;}
 body{overflow-x:hidden;background:#fff;}
 
-/* HERO */
-.hero{position:relative;height:100vh;}
-.slider,.slide{position:absolute;width:100%;height:100%;}
-.slide{opacity:0;transition:1s;background-size:cover;background-position:center;}
-.slide.active{opacity:1;}
-.hero-content{position:absolute;top:22%;width:100%;text-align:center;color:#fff;z-index:5;}
+/* ================= HERO ================= */
+.hero{
+position:relative;
+height:100vh;
+overflow:hidden;
+}
 
-/* NAVBAR (highest priority UI) */
+/* SLIDER (BACKGROUND LAYER) */
+.slider,.slide{
+position:absolute;
+width:100%;
+height:100%;
+}
+
+.slide{
+opacity:0;
+transition:1s;
+background-size:cover;
+background-position:center;
+z-index:1; /* ✅ FIX: keep behind everything */
+}
+
+.slide.active{opacity:1;}
+
+.hero-content{
+position:absolute;
+top:22%;
+width:100%;
+text-align:center;
+color:#fff;
+z-index:2;
+}
+
+/* ================= NAVBAR ================= */
 .navbar{
 position:fixed;
 top:0;
@@ -29,7 +55,7 @@ align-items:center;
 justify-content:space-between;
 padding:18px 4vw;
 background:#fff;
-z-index:100000; /* 🔥 ABOVE EVERYTHING */
+z-index:1000000; /* 🔥 TOP MOST */
 flex-wrap:wrap;
 }
 
@@ -50,7 +76,7 @@ margin-top:10px;
 
 .nav-item{cursor:pointer;font-size:14px;}
 
-/* DROPDOWN (must stay below navbar but above page) */
+/* ================= DROPDOWN ================= */
 .dropdown{
 position:fixed;
 top:0;
@@ -58,9 +84,10 @@ width:100%;
 opacity:0;
 visibility:hidden;
 transition:0.3s;
-z-index:99990;
+z-index:999999; /* 🔥 ABOVE SLIDER */
 pointer-events:none;
 }
+
 .dropdown.show{
 opacity:1;
 visibility:visible;
@@ -69,6 +96,7 @@ backdrop-filter:blur(25px);
 padding-top:90px;
 pointer-events:auto;
 }
+
 .dropdown-grid{
 display:grid;
 grid-template-columns:repeat(3,1fr);
@@ -77,32 +105,76 @@ padding:40px 5vw;
 max-width:1100px;
 margin:auto;
 }
+
 .dropdown-item{text-align:center;}
+
 .dropdown-item img{
 width:100%;
 height:120px;
 object-fit:contain;
 }
 
-/* CAROUSEL */
+/* ================= CAROUSEL ================= */
 .car-carousel{padding:60px 5vw;}
-.carousel-track{display:flex;gap:16px;overflow-x:auto;}
-.car-card{width:300px;flex:0 0 auto;background:#f5f5f5;border-radius:12px;overflow:hidden;}
-.car-card img{width:100%;height:200px;object-fit:cover;}
 
-/* MAP */
-.map-section{padding:60px 5vw;background:#0b0b0b;color:#fff;text-align:center;}
-#map{height:420px;border-radius:12px;}
-.find-btn{margin-top:15px;padding:12px 28px;border:none;border-radius:25px;background:#fff;cursor:pointer;}
+.carousel-track{
+display:flex;
+gap:16px;
+overflow-x:auto;
+}
 
-/* FOOTER */
-.footer{text-align:center;padding:40px 20px;font-size:12px;color:#666;}
-.footer-links{display:flex;justify-content:center;gap:15px;margin-top:10px;}
+.car-card{
+width:300px;
+flex:0 0 auto;
+background:#f5f5f5;
+border-radius:12px;
+overflow:hidden;
+}
 
-/* ========================= */
-/* 📲 POPUPS (FIXED LAYER) */
-/* ========================= */
+.car-card img{
+width:100%;
+height:200px;
+object-fit:cover;
+}
 
+/* ================= MAP ================= */
+.map-section{
+padding:60px 5vw;
+background:#0b0b0b;
+color:#fff;
+text-align:center;
+}
+
+#map{
+height:420px;
+border-radius:12px;
+}
+
+.find-btn{
+margin-top:15px;
+padding:12px 28px;
+border:none;
+border-radius:25px;
+background:#fff;
+cursor:pointer;
+}
+
+/* ================= FOOTER ================= */
+.footer{
+text-align:center;
+padding:40px 20px;
+font-size:12px;
+color:#666;
+}
+
+.footer-links{
+display:flex;
+justify-content:center;
+gap:15px;
+margin-top:10px;
+}
+
+/* ================= POPUPS ================= */
 #toast-container{
 position:fixed;
 bottom:20px;
@@ -110,8 +182,8 @@ left:20px;
 display:flex;
 flex-direction:column;
 gap:10px;
-z-index:99950; /* 🔥 LOWER THAN NAV + SAFE */
-pointer-events:none; /* 🔥 DOES NOT BLOCK CLICKS */
+z-index:99950;
+pointer-events:none;
 }
 
 .toast{
@@ -161,19 +233,26 @@ to{transform:translateX(-120%);opacity:0;}
 <h1 id="heroTitle">Model S</h1>
 </div>
 
+<!-- NAVBAR -->
 <div class="navbar">
 <div class="logo">TESLA</div>
+
 <div class="nav-center">
-<div class="nav-item" data-menu="vehicles">Vehicles</div>
-<div class="nav-item" data-menu="energy">Energy</div>
-<div class="nav-item" data-menu="charging">Charging</div>
-<div class="nav-item" data-menu="discover">Discover</div>
-<div class="nav-item" data-menu="shop">Shop</div>
+<div class="nav-item">Vehicles</div>
+<div class="nav-item">Energy</div>
+<div class="nav-item">Charging</div>
+<div class="nav-item">Discover</div>
+<div class="nav-item">Shop</div>
 </div>
 </div>
 
+<!-- DROPDOWN -->
 <div id="dropdown" class="dropdown">
-<div id="dropdown-content"></div>
+<div class="dropdown-grid">
+<div class="dropdown-item"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla7.avif"><p>Model S</p></div>
+<div class="dropdown-item"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla6.avif"><p>Model 3</p></div>
+<div class="dropdown-item"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla4.avif"><p>Model X</p></div>
+</div>
 </div>
 
 </header>
@@ -232,14 +311,11 @@ map.flyTo([lat,lon],14);
 });
 }
 
-/* DROPDOWN FIX */
+/* DROPDOWN */
 const dropdown=document.getElementById("dropdown");
-const content=document.getElementById("dropdown-content");
 
 document.querySelectorAll(".nav-item").forEach(item=>{
-item.onmouseenter=item.onclick=()=>{
-dropdown.classList.add("show");
-};
+item.onmouseenter=()=>dropdown.classList.add("show");
 });
 
 document.addEventListener("click",(e)=>{
@@ -248,30 +324,20 @@ dropdown.classList.remove("show");
 }
 });
 
-/* ========================= */
-/* 📲 POPUPS (FIXED FLOW) */
-/* ========================= */
-
+/* POPUPS */
 const messages=[
-"John Smith bought Model S + Tesla stock 🚗📈",
-"Ada Okafor invested in Cybertruck + TSLA shares ⚡",
-"Michael Brown purchased Model 3 + Solar Panels ☀️",
-"David Lee got 3x return from Tesla stock 💰",
-"Sarah Johnson bought Model Y + Powerwall 🔋",
-"Chinedu invested early in Tesla 🌍"
+"John bought Tesla Model S + TSLA stock 🚗📈",
+"Ada invested in Cybertruck + shares ⚡",
+"Michael bought Model 3 + Solar ☀️",
+"David got 3x Tesla stock return 💰"
 ];
 
 const container=document.getElementById("toast-container");
 
-const SHOW_TIME=4000;
-const GAP_TIME=1200;
-
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 
 async function runToasts(){
-
 while(true){
-
 let msg=messages[Math.floor(Math.random()*messages.length)];
 
 let toast=document.createElement("div");
@@ -280,7 +346,7 @@ toast.innerHTML=`<b>Tesla Update</b>${msg}`;
 
 container.appendChild(toast);
 
-await sleep(SHOW_TIME);
+await sleep(4000);
 
 toast.style.animation="fadeOut 0.6s forwards";
 
@@ -288,9 +354,8 @@ await sleep(600);
 
 toast.remove();
 
-await sleep(GAP_TIME);
+await sleep(1200);
 }
-
 }
 
 runToasts();
