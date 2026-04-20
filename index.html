@@ -12,12 +12,14 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;}
 body{overflow-x:hidden;background:#fff;}
 
+/* HERO */
 .hero{position:relative;height:100vh;}
 .slider,.slide{position:absolute;width:100%;height:100%;}
 .slide{opacity:0;transition:1s;background-size:cover;background-position:center;z-index:1;}
 .slide.active{opacity:1;}
 .hero-content{position:absolute;top:22%;width:100%;text-align:center;color:#fff;z-index:2;}
 
+/* NAVBAR */
 .navbar{
 position:fixed;top:0;width:100%;
 display:flex;align-items:center;justify-content:space-between;
@@ -33,6 +35,7 @@ justify-content:center;width:100%;margin-top:10px;
 
 .nav-item{cursor:pointer;font-size:14px;}
 
+/* DROPDOWN */
 .dropdown{
 position:fixed;top:0;left:0;width:100%;
 opacity:0;visibility:hidden;transition:0.3s;
@@ -59,15 +62,18 @@ object-fit:cover;border-radius:10px;
 
 .dropdown-item p{margin-top:8px;font-size:13px;}
 
+/* CAROUSEL */
 .car-carousel{padding:60px 5vw;}
 .carousel-track{display:flex;gap:16px;overflow-x:auto;}
 .car-card{width:300px;flex:0 0 auto;background:#f5f5f5;border-radius:12px;overflow:hidden;}
 .car-card img{width:100%;height:200px;object-fit:cover;}
 
+/* MAP */
 .map-section{padding:60px 5vw;background:#0b0b0b;color:#fff;text-align:center;}
 #map{height:420px;border-radius:12px;}
 .find-btn{margin-top:15px;padding:12px 28px;border:none;border-radius:25px;background:#fff;cursor:pointer;}
 
+/* TOAST */
 #toast-container{
 position:fixed;bottom:20px;left:20px;
 display:flex;flex-direction:column;gap:10px;
@@ -166,8 +172,7 @@ map.flyTo([lat,lon],14);
 });
 }
 
-/* DROPDOWN */
-
+/* DROPDOWN DATA */
 const dropdown=document.getElementById("dropdown");
 const content=document.getElementById("dropdown-content");
 
@@ -192,12 +197,12 @@ energy:[
 ],
 
 charging:[
-["Supercharger","charger.jpg"],
-["Home Charging","home.jpg"],
-["Station","station.jpg"],
-["Wall Connector","wall.jpg"],
-["Cable","cable.jpg"],
-["Plug","plug.jpg"]
+["Supercharger","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/0fa4b9d44e3066b9fa8922848850eb8165d38650/IMG_1252.jpeg"],
+["Home Charging","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/a29d7782ed7a12e5188402d4abcdd54b7709d3a4/IMG_1253.jpeg"],
+["Station","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/a29d7782ed7a12e5188402d4abcdd54b7709d3a4/IMG_1252.jpeg"],
+["Wall Connector","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/a29d7782ed7a12e5188402d4abcdd54b7709d3a4/IMG_1257.jpeg"],
+["Cable","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/a29d7782ed7a12e5188402d4abcdd54b7709d3a4/IMG_1252.jpeg"],
+["Plug","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/a29d7782ed7a12e5188402d4abcdd54b7709d3a4/IMG_1253.jpeg"]
 ],
 
 discover:[
@@ -220,6 +225,7 @@ shop:[
 
 };
 
+/* RENDER DROPDOWN */
 document.querySelectorAll(".nav-item").forEach(item=>{
 function openMenu(){
 let data=menus[item.dataset.menu];
@@ -227,7 +233,7 @@ if(!data) return;
 
 content.innerHTML=data.map(m=>`
 <div class="dropdown-item">
-<img src="${m[1].startsWith('http')?m[1]:'https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/'+m[1]}">
+<img src="${m[1]}">
 <p>${m[0]}</p>
 </div>
 `).join("");
@@ -243,7 +249,16 @@ if(!e.target.closest(".nav-item")) dropdown.classList.remove("show");
 });
 
 /* 50 TESTIMONIALS */
-const messages=[...Array(50)].map((_,i)=>`User ${i+1} invested in Tesla 🚀`);
+const messages=[
+"User 1 invested in Tesla 🚀","User 2 bought Model S","User 3 installed Solar Panels",
+"User 4 upgraded to Cybertruck","User 5 invested in TSLA","User 6 joined Tesla Energy",
+"User 7 bought Model 3","User 8 installed Powerwall","User 9 invested in Solar Roof",
+"User 10 bought Model X","User 11 invested in Grid","User 12 upgraded Tesla system",
+"User 13 bought Model Y","User 14 joined investors","User 15 invested in Tesla stock",
+"User 16 bought Cybertruck","User 17 installed charger","User 18 upgraded energy system",
+"User 19 invested in Solar","User 20 bought Model S",
+...Array.from({length:30},(_,i)=>`User ${i+21} invested in Tesla ⚡`)
+];
 
 const container=document.getElementById("toast-container");
 
