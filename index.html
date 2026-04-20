@@ -12,152 +12,80 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;}
 body{overflow-x:hidden;background:#fff;}
 
-/* HERO */
 .hero{position:relative;height:100vh;}
 .slider,.slide{position:absolute;width:100%;height:100%;}
-.slide{
-opacity:0;
-transition:1s;
-background-size:cover;
-background-position:center;
-z-index:1;
-}
+.slide{opacity:0;transition:1s;background-size:cover;background-position:center;z-index:1;}
 .slide.active{opacity:1;}
-.hero-content{
-position:absolute;
-top:22%;
-width:100%;
-text-align:center;
-color:#fff;
-z-index:2;
-}
+.hero-content{position:absolute;top:22%;width:100%;text-align:center;color:#fff;z-index:2;}
 
-/* NAVBAR */
 .navbar{
-position:fixed;
-top:0;
-width:100%;
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:18px 4vw;
-background:#fff;
-z-index:1000000;
-flex-wrap:wrap;
+position:fixed;top:0;width:100%;
+display:flex;align-items:center;justify-content:space-between;
+padding:18px 4vw;background:#fff;z-index:1000000;flex-wrap:wrap;
 }
 
-.logo{
-font-weight:bold;
-letter-spacing:3px;
-}
+.logo{font-weight:bold;letter-spacing:3px;}
 
 .nav-center{
-display:flex;
-gap:18px;
-flex-wrap:wrap;
-justify-content:center;
-width:100%;
-margin-top:10px;
+display:flex;gap:18px;flex-wrap:wrap;
+justify-content:center;width:100%;margin-top:10px;
 }
 
-.nav-item{
-cursor:pointer;
-font-size:14px;
-}
+.nav-item{cursor:pointer;font-size:14px;}
 
-/* DROPDOWN */
 .dropdown{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-opacity:0;
-visibility:hidden;
-transition:0.3s;
-z-index:999999;
-background:rgba(255,255,255,0.95);
-backdrop-filter:blur(20px);
-padding-top:90px;
+position:fixed;top:0;left:0;width:100%;
+opacity:0;visibility:hidden;transition:0.3s;
+z-index:999999;background:rgba(255,255,255,0.95);
+backdrop-filter:blur(20px);padding-top:90px;
 }
 
-.dropdown.show{
-opacity:1;
-visibility:visible;
-}
+.dropdown.show{opacity:1;visibility:visible;}
 
-/* GRID */
 .dropdown-grid{
 display:grid;
 grid-template-columns:repeat(3,1fr);
 grid-template-rows:repeat(2,1fr);
-gap:20px;
-padding:40px 5vw;
-max-width:1100px;
-margin:auto;
+gap:20px;padding:40px 5vw;
+max-width:1100px;margin:auto;
 }
 
-.dropdown-item{
-text-align:center;
-cursor:pointer;
-}
+.dropdown-item{text-align:center;cursor:pointer;}
 
 .dropdown-item img{
-width:100%;
-height:120px;
-object-fit:cover;
-border-radius:10px;
+width:100%;height:120px;
+object-fit:cover;border-radius:10px;
 }
 
-.dropdown-item p{
-margin-top:8px;
-font-size:13px;
-}
+.dropdown-item p{margin-top:8px;font-size:13px;}
 
-/* CAROUSEL */
 .car-carousel{padding:60px 5vw;}
 .carousel-track{display:flex;gap:16px;overflow-x:auto;}
 .car-card{width:300px;flex:0 0 auto;background:#f5f5f5;border-radius:12px;overflow:hidden;}
 .car-card img{width:100%;height:200px;object-fit:cover;}
 
-/* MAP */
 .map-section{padding:60px 5vw;background:#0b0b0b;color:#fff;text-align:center;}
 #map{height:420px;border-radius:12px;}
 .find-btn{margin-top:15px;padding:12px 28px;border:none;border-radius:25px;background:#fff;cursor:pointer;}
 
-/* POPUPS */
 #toast-container{
-position:fixed;
-bottom:20px;
-left:20px;
-display:flex;
-flex-direction:column;
-gap:10px;
-z-index:99950;
-pointer-events:none;
+position:fixed;bottom:20px;left:20px;
+display:flex;flex-direction:column;gap:10px;
+z-index:99950;pointer-events:none;
 }
 
 .toast{
-min-width:260px;
-max-width:300px;
+min-width:260px;max-width:300px;
 background:rgba(20,20,20,0.92);
-color:#fff;
-padding:12px;
-border-radius:14px;
-transform:translateX(-120%);
-opacity:0;
-animation:slideIn 0.6s forwards;
-font-size:13px;
+color:#fff;padding:12px;border-radius:14px;
+transform:translateX(-120%);opacity:0;
+animation:slideIn 0.6s forwards;font-size:13px;
 }
 
 .toast b{color:#00ffcc;display:block;margin-bottom:4px;}
 
-@keyframes slideIn{
-to{transform:translateX(0);opacity:1;}
-}
-
-@keyframes fadeOut{
-to{transform:translateX(-120%);opacity:0;}
-}
+@keyframes slideIn{to{transform:translateX(0);opacity:1;}}
+@keyframes fadeOut{to{transform:translateX(-120%);opacity:0;}}
 </style>
 </head>
 
@@ -238,7 +166,7 @@ map.flyTo([lat,lon],14);
 });
 }
 
-/* DROPDOWN SYSTEM */
+/* DROPDOWN */
 
 const dropdown=document.getElementById("dropdown");
 const content=document.getElementById("dropdown-content");
@@ -255,8 +183,8 @@ vehicles:[
 ],
 
 energy:[
-["Solar Panels","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/23c97c6ef1f2e5c75d0b41d0f743893cef21e23c/IMG_1252.jpeg"],
-["Solar Roof","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/23c97c6ef1f2e5c75d0b41d0f743893cef21e23c/IMG_1251.jpeg"],
+["Solar Panels","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/2c384b3a390ce056172cf7a7f84159967ef2037e/IMG_1243.jpeg"],
+["Solar Roof","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/2c384b3a390ce056172cf7a7f84159967ef2037e/IMG_1244.jpeg"],
 ["Powerwall","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/23c97c6ef1f2e5c75d0b41d0f743893cef21e23c/IMG_1250.jpeg"],
 ["Battery","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/23c97c6ef1f2e5c75d0b41d0f743893cef21e23c/IMG_1249.jpeg"],
 ["Wind","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/23c97c6ef1f2e5c75d0b41d0f743893cef21e23c/IMG_1248.jpeg"],
@@ -293,47 +221,29 @@ shop:[
 };
 
 document.querySelectorAll(".nav-item").forEach(item=>{
-
 function openMenu(){
-let menu=item.dataset.menu;
-let data=menus[menu];
+let data=menus[item.dataset.menu];
 if(!data) return;
 
 content.innerHTML=data.map(m=>`
 <div class="dropdown-item">
-<img src="${m[1].startsWith('http') ? m[1] : 'https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/'+m[1]}">
+<img src="${m[1].startsWith('http')?m[1]:'https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/'+m[1]}">
 <p>${m[0]}</p>
 </div>
 `).join("");
 
 dropdown.classList.add("show");
 }
-
 item.onmouseenter=openMenu;
 item.onclick=openMenu;
-
 });
 
-document.addEventListener("click",(e)=>{
-if(!e.target.closest(".nav-item")){
-dropdown.classList.remove("show");
-}
+document.addEventListener("click",e=>{
+if(!e.target.closest(".nav-item")) dropdown.classList.remove("show");
 });
 
-/* TESTIMONIALS */
-
-const messages=[
-"John bought Model S + TSLA 📈","Ada invested in Solar Panels ☀️","Michael ordered Model 3 🚗","David upgraded to Model X 💰","Sarah installed Powerwall 🔋",
-"Daniel bought Cybertruck ⚡","Grace invested in Tesla Energy 🌍","Chris purchased Model Y 🚘","Emma joined Tesla investors 📊","Liam bought Model S Plaid 🔥",
-"Noah installed Solar Roof ☀️","Olivia invested in Tesla stock 📈","James ordered Model 3 Performance 🚗","Lucas bought Model X 🖤","Mia installed Powerwall 🔋",
-"Ethan invested in energy grid ⚡","Charlotte bought Model Y 🚘","Benjamin ordered Cybertruck ⚡","Amelia invested in Tesla 💰","Henry upgraded to Model S 🔥",
-"Evelyn installed solar panels ☀️","Alexander bought Model 3 🚗","Harper invested in Tesla shares 📊","Jack purchased Model X 🖤","Abigail installed Powerwall 🔋",
-"Sebastian bought Cybertruck ⚡","Emily invested in Tesla energy 🌍","Matthew ordered Model Y 🚘","Scarlett bought Model S 🔥","Daniel joined Tesla investors 📈",
-"Avery installed Solar Roof ☀️","Joseph bought Model 3 🚗","Sofia invested in Tesla stock 📊","Samuel purchased Model X 🖤","Victoria installed Powerwall 🔋",
-"David upgraded to Cybertruck ⚡","Aria invested in energy systems 🌍","Carter bought Model Y 🚘","Chloe purchased Model S 🔥","Wyatt joined Tesla investors 📈",
-"Zoey installed solar panels ☀️","Isaac bought Model 3 🚗","Lily invested in Tesla 📊","Gabriel purchased Model X 🖤","Hannah installed Powerwall 🔋",
-"Anthony bought Cybertruck ⚡","Nora invested in Tesla energy 🌍","Julian ordered Model Y 🚘","Leah bought Model S 🔥","Ryan joined Tesla investors 📈"
-];
+/* 50 TESTIMONIALS */
+const messages=[...Array(50)].map((_,i)=>`User ${i+1} invested in Tesla 🚀`);
 
 const container=document.getElementById("toast-container");
 
@@ -342,21 +252,14 @@ function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 async function runToasts(){
 while(true){
 let msg=messages[Math.floor(Math.random()*messages.length)];
-
 let toast=document.createElement("div");
 toast.className="toast";
 toast.innerHTML=`<b>Tesla Update</b>${msg}`;
-
 container.appendChild(toast);
-
 await sleep(4000);
-
 toast.style.animation="fadeOut 0.6s forwards";
-
 await sleep(600);
-
 toast.remove();
-
 await sleep(1200);
 }
 }
