@@ -12,30 +12,17 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;}
 body{overflow-x:hidden;background:#fff;}
 
-/* ================= HERO ================= */
-.hero{
-position:relative;
-height:100vh;
-overflow:hidden;
-}
-
-/* SLIDER (BACKGROUND LAYER) */
-.slider,.slide{
-position:absolute;
-width:100%;
-height:100%;
-}
-
+/* HERO */
+.hero{position:relative;height:100vh;}
+.slider,.slide{position:absolute;width:100%;height:100%;}
 .slide{
 opacity:0;
 transition:1s;
 background-size:cover;
 background-position:center;
-z-index:1; /* ✅ FIX: keep behind everything */
+z-index:1;
 }
-
 .slide.active{opacity:1;}
-
 .hero-content{
 position:absolute;
 top:22%;
@@ -45,7 +32,7 @@ color:#fff;
 z-index:2;
 }
 
-/* ================= NAVBAR ================= */
+/* NAVBAR */
 .navbar{
 position:fixed;
 top:0;
@@ -55,14 +42,13 @@ align-items:center;
 justify-content:space-between;
 padding:18px 4vw;
 background:#fff;
-z-index:1000000; /* 🔥 TOP MOST */
+z-index:1000000;
 flex-wrap:wrap;
 }
 
 .logo{
 font-weight:bold;
 letter-spacing:3px;
-white-space:nowrap;
 }
 
 .nav-center{
@@ -74,107 +60,71 @@ width:100%;
 margin-top:10px;
 }
 
-.nav-item{cursor:pointer;font-size:14px;}
+.nav-item{
+cursor:pointer;
+font-size:14px;
+}
 
-/* ================= DROPDOWN ================= */
+/* DROPDOWN */
 .dropdown{
 position:fixed;
 top:0;
+left:0;
 width:100%;
 opacity:0;
 visibility:hidden;
 transition:0.3s;
-z-index:999999; /* 🔥 ABOVE SLIDER */
-pointer-events:none;
+z-index:999999;
+background:rgba(255,255,255,0.95);
+backdrop-filter:blur(20px);
+padding-top:90px;
 }
 
 .dropdown.show{
 opacity:1;
 visibility:visible;
-background:rgba(245,245,245,0.95);
-backdrop-filter:blur(25px);
-padding-top:90px;
-pointer-events:auto;
 }
 
+/* 3 x 2 GRID */
 .dropdown-grid{
 display:grid;
 grid-template-columns:repeat(3,1fr);
-gap:25px;
+grid-template-rows:repeat(2,1fr);
+gap:20px;
 padding:40px 5vw;
 max-width:1100px;
 margin:auto;
 }
 
-.dropdown-item{text-align:center;}
+.dropdown-item{
+text-align:center;
+cursor:pointer;
+}
 
 .dropdown-item img{
 width:100%;
 height:120px;
-object-fit:contain;
-}
-
-/* ================= CAROUSEL ================= */
-.car-carousel{padding:60px 5vw;}
-
-.carousel-track{
-display:flex;
-gap:16px;
-overflow-x:auto;
-}
-
-.car-card{
-width:300px;
-flex:0 0 auto;
-background:#f5f5f5;
-border-radius:12px;
-overflow:hidden;
-}
-
-.car-card img{
-width:100%;
-height:200px;
 object-fit:cover;
+border-radius:10px;
 }
 
-/* ================= MAP ================= */
-.map-section{
-padding:60px 5vw;
-background:#0b0b0b;
-color:#fff;
-text-align:center;
+.dropdown-item p{
+margin-top:8px;
+font-size:13px;
 }
 
-#map{
-height:420px;
-border-radius:12px;
-}
+/* CAROUSEL */
+.car-carousel{padding:60px 5vw;}
+.carousel-track{display:flex;gap:16px;overflow-x:auto;}
+.car-card{width:300px;flex:0 0 auto;background:#f5f5f5;border-radius:12px;overflow:hidden;}
+.car-card img{width:100%;height:200px;object-fit:cover;}
 
-.find-btn{
-margin-top:15px;
-padding:12px 28px;
-border:none;
-border-radius:25px;
-background:#fff;
-cursor:pointer;
-}
+/* MAP */
+.map-section{padding:60px 5vw;background:#0b0b0b;color:#fff;text-align:center;}
+#map{height:420px;border-radius:12px;}
+.find-btn{margin-top:15px;padding:12px 28px;border:none;border-radius:25px;background:#fff;cursor:pointer;}
 
-/* ================= FOOTER ================= */
-.footer{
-text-align:center;
-padding:40px 20px;
-font-size:12px;
-color:#666;
-}
-
-.footer-links{
-display:flex;
-justify-content:center;
-gap:15px;
-margin-top:10px;
-}
-
-/* ================= POPUPS ================= */
+/* POPUPS */
 #toast-container{
 position:fixed;
 bottom:20px;
@@ -191,21 +141,15 @@ min-width:260px;
 max-width:300px;
 background:rgba(20,20,20,0.92);
 color:#fff;
-padding:12px 14px;
+padding:12px;
 border-radius:14px;
-box-shadow:0 10px 30px rgba(0,0,0,0.3);
 transform:translateX(-120%);
 opacity:0;
 animation:slideIn 0.6s forwards;
 font-size:13px;
-line-height:1.4;
 }
 
-.toast b{
-display:block;
-margin-bottom:4px;
-color:#00ffcc;
-}
+.toast b{color:#00ffcc;display:block;margin-bottom:4px;}
 
 @keyframes slideIn{
 to{transform:translateX(0);opacity:1;}
@@ -214,7 +158,6 @@ to{transform:translateX(0);opacity:1;}
 @keyframes fadeOut{
 to{transform:translateX(-120%);opacity:0;}
 }
-
 </style>
 </head>
 
@@ -233,26 +176,22 @@ to{transform:translateX(-120%);opacity:0;}
 <h1 id="heroTitle">Model S</h1>
 </div>
 
-<!-- NAVBAR -->
+<!-- NAV -->
 <div class="navbar">
 <div class="logo">TESLA</div>
 
 <div class="nav-center">
-<div class="nav-item">Vehicles</div>
-<div class="nav-item">Energy</div>
-<div class="nav-item">Charging</div>
-<div class="nav-item">Discover</div>
-<div class="nav-item">Shop</div>
+<div class="nav-item" data-menu="vehicles">Vehicles</div>
+<div class="nav-item" data-menu="energy">Energy</div>
+<div class="nav-item" data-menu="charging">Charging</div>
+<div class="nav-item" data-menu="discover">Discover</div>
+<div class="nav-item" data-menu="shop">Shop</div>
 </div>
 </div>
 
 <!-- DROPDOWN -->
 <div id="dropdown" class="dropdown">
-<div class="dropdown-grid">
-<div class="dropdown-item"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla7.avif"><p>Model S</p></div>
-<div class="dropdown-item"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla6.avif"><p>Model 3</p></div>
-<div class="dropdown-item"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla4.avif"><p>Model X</p></div>
-</div>
+<div id="dropdown-content" class="dropdown-grid"></div>
 </div>
 
 </header>
@@ -261,10 +200,10 @@ to{transform:translateX(-120%);opacity:0;}
 <section class="car-carousel">
 <h2>Discover Vehicles</h2>
 <div class="carousel-track">
-<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla4.avif"><h3>Model S</h3></div>
-<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla3.avif"><h3>Model 3</h3></div>
-<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla%201.avif"><h3>Model X</h3></div>
-<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/cyber%20truck.jpg"><h3>Cybertruck</h3></div>
+<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla4.avif"></div>
+<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla3.avif"></div>
+<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla%201.avif"></div>
+<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/cyber%20truck.jpg"></div>
 </div>
 </section>
 
@@ -277,11 +216,6 @@ to{transform:translateX(-120%);opacity:0;}
 
 <!-- POPUPS -->
 <div id="toast-container"></div>
-
-<!-- FOOTER -->
-<footer class="footer">
-Tesla © 2026
-</footer>
 
 <script>
 
@@ -299,7 +233,6 @@ title.textContent=slides[i].dataset.title;
 
 /* MAP */
 let map=L.map("map").setView([20,0],2);
-
 L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png").addTo(map);
 
 function findMe(){
@@ -311,11 +244,83 @@ map.flyTo([lat,lon],14);
 });
 }
 
-/* DROPDOWN */
+/* ========================= */
+/* 🔥 FULL DROPDOWN SYSTEM */
+/* ========================= */
+
 const dropdown=document.getElementById("dropdown");
+const content=document.getElementById("dropdown-content");
+
+const menus={
+
+vehicles:[
+["Model S","tesla7.avif"],
+["Model 3","tesla6.avif"],
+["Model X","tesla4.avif"],
+["Model Y","tesla3.avif"],
+["Cybertruck","cyber truck.jpg"],
+["Roadster","tesla 1.avif"]
+],
+
+energy:[
+["Solar Panels","solar.jpg"],
+["Solar Roof","solar2.jpg"],
+["Powerwall","powerwall.jpg"],
+["Battery","battery.jpg"],
+["Wind","wind.jpg"],
+["Grid","grid.jpg"]
+],
+
+charging:[
+["Supercharger","charger.jpg"],
+["Home Charging","home.jpg"],
+["Station","station.jpg"],
+["Wall Connector","wall.jpg"],
+["Cable","cable.jpg"],
+["Plug","plug.jpg"]
+],
+
+discover:[
+["Autopilot","auto.jpg"],
+["Interior","interior.jpg"],
+["Software","soft.jpg"],
+["Fleet","fleet.jpg"],
+["Network","network.jpg"],
+["Future","future.jpg"]
+],
+
+shop:[
+["Accessories","acc.jpg"],
+["Parts","parts.jpg"],
+["Key","key.jpg"],
+["Gadgets","gadgets.jpg"],
+["Collection","collection.jpg"],
+["Apparel","apparel.jpg"]
+]
+
+};
 
 document.querySelectorAll(".nav-item").forEach(item=>{
-item.onmouseenter=()=>dropdown.classList.add("show");
+
+function openMenu(){
+let menu=item.dataset.menu;
+let data=menus[menu];
+
+if(!data) return;
+
+content.innerHTML=data.map(m=>`
+<div class="dropdown-item">
+<img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/${m[1]}">
+<p>${m[0]}</p>
+</div>
+`).join("");
+
+dropdown.classList.add("show");
+}
+
+item.onmouseenter=openMenu;
+item.onclick=openMenu;
+
 });
 
 document.addEventListener("click",(e)=>{
@@ -326,10 +331,10 @@ dropdown.classList.remove("show");
 
 /* POPUPS */
 const messages=[
-"John bought Tesla Model S + TSLA stock 🚗📈",
-"Ada invested in Cybertruck + shares ⚡",
-"Michael bought Model 3 + Solar ☀️",
-"David got 3x Tesla stock return 💰"
+"John bought Model S + TSLA 📈",
+"Ada invested Cybertruck ⚡",
+"Michael bought Model 3 ☀️",
+"David made profit from Tesla 💰"
 ];
 
 const container=document.getElementById("toast-container");
