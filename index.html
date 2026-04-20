@@ -72,18 +72,10 @@ z-index:99999;
 .popup-close{
 position:absolute;
 top:10px;
-left:10px; /* ✅ BACK TO LEFT */
+left:10px;
 cursor:pointer;
 display:none;
 }
-
-/* TESTIMONIAL */
-#testimonialContainer{position:fixed;left:10px;bottom:10px;z-index:99990;}
-.testimonial{
-background:#111;color:#fff;padding:10px;border-radius:10px;
-opacity:0;transform:scale(0.7);transition:0.5s;
-}
-.testimonial.show{opacity:1;transform:scale(1);}
 </style>
 </head>
 
@@ -117,9 +109,9 @@ opacity:0;transform:scale(0.7);transition:0.5s;
 
 <!-- HERO -->
 <div class="hero">
-<div class="slide active" style="background-image:url('https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla7.avif')"></div>
-<div class="slide" style="background-image:url('https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla6.avif')"></div>
-<div class="slide" style="background-image:url('https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla5.avif')"></div>
+<div class="slide active" data-title="Model S" style="background-image:url('https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla7.avif')"></div>
+<div class="slide" data-title="Model 3" style="background-image:url('https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla6.avif')"></div>
+<div class="slide" data-title="Cybertruck" style="background-image:url('https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla5.avif')"></div>
 <div class="hero-content"><h1 id="heroTitle">Model S</h1></div>
 </div>
 
@@ -138,15 +130,22 @@ opacity:0;transform:scale(0.7);transition:0.5s;
 <button class="find-btn" onclick="findMe()">Find Me</button>
 </section>
 
-<!-- FOOTER -->
 <div class="footer">Tesla © 2026</div>
-
-<!-- TESTIMONIAL -->
-<div id="testimonialContainer"></div>
 
 <script>
 
-/* MAP */
+/* SLIDER FIX */
+let slides=document.querySelectorAll(".slide");
+let title=document.getElementById("heroTitle");
+let i=0;
+setInterval(()=>{
+slides[i].classList.remove("active");
+i=(i+1)%slides.length;
+slides[i].classList.add("active");
+title.textContent=slides[i].dataset.title;
+},4000);
+
+/* MAP FIX */
 let map=L.map("map").setView([20,0],2);
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
 
@@ -159,7 +158,53 @@ map.flyTo([lat,lon],14);
 });
 }
 
-/* DROPDOWN (TESLA-RELEVANT ONLY) */
+/* POPUP + COUNTDOWN FIX */
+window.onload=()=>{
+if(localStorage.getItem("submitted")) return;
+
+let last=localStorage.getItem("popupTime");
+let now=Date.now();
+
+if(!last || now-last>1200000){
+document.getElementById("popup").style.display="flex";
+startTimer();
+}
+};
+
+function startTimer(){
+let t=60;
+let btn=document.getElementById("acceptBtn");
+let closeBtn=document.getElementById("closeBtn");
+
+btn.innerText="Wait 60s";
+
+let timer=setInterval(()=>{
+t--;
+btn.innerText="Wait "+t+"s";
+
+if(t<=0){
+clearInterval(timer);
+btn.disabled=false;
+btn.innerText="Accept";
+closeBtn.style.display="block";
+}
+},1000);
+}
+
+function accept(){
+localStorage.setItem("submitted","true");
+localStorage.setItem("popupTime",Date.now());
+window.location.href="form.html";
+}
+
+function closePopup(){
+document.getElementById("popup").style.display="none";
+}
+
+/* DROPDOWN FIX (TESLA ONLY) */
+const dropdown=document.getElementById("dropdown");
+const content=document.getElementById("dropdown-content");
+
 const menus={
 charging:[
 {img:"https://upload.wikimedia.org/wikipedia/commons/5/5b/Tesla_Supercharger.jpg",name:"Supercharger"},
@@ -189,25 +234,25 @@ discover:[
 ]
 };
 
-/* POPUP CONTROL */
-window.onload=()=>{
-if(localStorage.getItem("submitted")) return;
+document.querySelectorAll(".nav-item").forEach(item=>{
+item.onclick=item.onmouseenter=()=>{
+let menu=item.dataset.menu;
+if(!menus[menu]) return;
 
-let last=localStorage.getItem("popupTime");
-let now=Date.now();
-if(!last || now-last>1200000){
-document.getElementById("popup").style.display="flex";
-}
+content.innerHTML=`<div class="dropdown-grid">
+${menus[menu].map(m=>`
+<div class="dropdown-item">
+<img src="${m.img}">
+<p>${m.name}</p>
+</div>`).join("")}
+</div>`;
+dropdown.classList.add("show");
 };
+});
 
-function accept(){
-localStorage.setItem("submitted","true");
-window.location.href="form.html";
-}
-
-function closePopup(){
-document.getElementById("popup").style.display="none";
-}
+document.onclick=(e)=>{
+if(!e.target.closest(".nav-item")) dropdown.classList.remove("show");
+};
 
 </script>
 
