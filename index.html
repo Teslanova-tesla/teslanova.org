@@ -14,8 +14,7 @@ body{overflow-x:hidden;background:#fff;}
 
 /* NAVBAR */
 .navbar{
-position:fixed;
-top:0;width:100%;
+position:fixed;top:0;width:100%;
 display:flex;flex-direction:column;
 background:#fff;z-index:9999;padding:15px 5vw;
 }
@@ -36,7 +35,7 @@ gap:20px;padding:30px;
 
 /* HERO */
 .hero{height:100vh;position:relative;}
-.slide{position:absolute;width:100%;height:100%;opacity:0;transition:1s;background-size:cover;}
+.slide{position:absolute;width:100%;height:100%;opacity:0;transition:1s;background-size:cover;background-position:center;}
 .slide.active{opacity:1;}
 .hero-content{position:absolute;top:30%;width:100%;text-align:center;color:#fff;}
 
@@ -100,18 +99,20 @@ opacity:0;transform:scale(0.7);transition:0.5s;
 <div id="dropdown-content"></div>
 </div>
 
-<!-- HERO -->
+<!-- HERO SLIDER (RESTORED) -->
 <div class="hero">
-<div class="slide active" style="background-image:url('https://picsum.photos/800/600?1')"></div>
-<div class="slide" style="background-image:url('https://picsum.photos/800/600?2')"></div>
-<div class="slide" style="background-image:url('https://picsum.photos/800/600?3')"></div>
+<div class="slide active" data-title="Model S" style="background-image:url('https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla7.avif')"></div>
+<div class="slide" data-title="Model 3" style="background-image:url('https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla6.avif')"></div>
+<div class="slide" data-title="Cybertruck" style="background-image:url('https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla5.avif')"></div>
 <div class="hero-content"><h1 id="heroTitle">Model S</h1></div>
 </div>
 
-<!-- CAROUSEL -->
+<!-- CAROUSEL (RESTORED) -->
 <div class="carousel-track">
-<div class="car-card"><img src="https://picsum.photos/300/200?1"><h3>Model S</h3></div>
-<div class="car-card"><img src="https://picsum.photos/300/200?2"><h3>Model 3</h3></div>
+<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla4.avif"><h3>Model S</h3></div>
+<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla3.avif"><h3>Model 3</h3></div>
+<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/b8ae2d1db22774aaed75651ddddd4da547bb2c66/tesla%201.avif"><h3>Model X</h3></div>
+<div class="car-card"><img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/cyber%20truck.jpg"><h3>Cybertruck</h3></div>
 </div>
 
 <!-- MAP -->
@@ -127,37 +128,78 @@ opacity:0;transform:scale(0.7);transition:0.5s;
 
 /* SLIDER */
 let slides=document.querySelectorAll(".slide");
+let title=document.getElementById("heroTitle");
 let i=0;
 setInterval(()=>{
 slides[i].classList.remove("active");
 i=(i+1)%slides.length;
 slides[i].classList.add("active");
+title.textContent=slides[i].dataset.title;
 },4000);
 
 /* MAP */
 let map=L.map("map").setView([6.5,3.3],5);
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
 
-/* DROPDOWN */
+/* DROPDOWN (FIXED IMAGES) */
 const dropdown=document.getElementById("dropdown");
 const content=document.getElementById("dropdown-content");
 
 const menus={
-vehicles:[1,2,3,4,5,6],
-energy:[1,2,3,4,5,6],
-charging:[1,2,3,4,5,6],
-discover:[1,2,3,4,5,6],
-shop:[1,2,3,4,5,6]
+vehicles:[
+{img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla7.avif",name:"Model S"},
+{img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla6.avif",name:"Model 3"},
+{img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla4.avif",name:"Model X"},
+{img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla3.avif",name:"Model Y"},
+{img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/cyber%20truck.jpg",name:"Cybertruck"},
+{img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla%201.avif",name:"Roadster"}
+],
+
+energy:[
+{img:"https://images.unsplash.com/photo-1509395176047-4a66953fd231",name:"Solar Panels"},
+{img:"https://images.unsplash.com/photo-1592838064575-70ed626d3a0e",name:"Solar Roof"},
+{img:"https://upload.wikimedia.org/wikipedia/commons/9/9e/Tesla_Powerwall.jpg",name:"Powerwall"},
+{img:"https://images.unsplash.com/photo-1559302995-fc0c8cdbf3b0",name:"Energy Storage"},
+{img:"https://images.unsplash.com/photo-1508514177221-188b1cf16e9d",name:"Grid"},
+{img:"https://images.unsplash.com/photo-1473341304170-971dccb5ac1e",name:"Renewables"}
+],
+
+charging:[
+{img:"https://upload.wikimedia.org/wikipedia/commons/5/5b/Tesla_Supercharger.jpg",name:"Supercharger"},
+{img:"https://images.unsplash.com/photo-1619767886558-efdc259cde1a",name:"Home Charging"},
+{img:"https://images.unsplash.com/photo-1605152276897-4f618f831968",name:"Charging Station"},
+{img:"https://images.unsplash.com/photo-1581091215367-59ab6b45efef",name:"Wall Connector"},
+{img:"https://images.unsplash.com/photo-1603791440384-56cd371ee9a7",name:"Cables"},
+{img:"https://images.unsplash.com/photo-1611095785388-5f7d4e07c6e4",name:"Adapters"}
+],
+
+discover:[
+{img:"https://images.unsplash.com/photo-1511919884226-fd3cad34687c",name:"Autopilot"},
+{img:"https://images.unsplash.com/photo-1493238792000-8113da705763",name:"Interior"},
+{img:"https://images.unsplash.com/photo-1485827404703-89b55fcc595e",name:"AI Tech"},
+{img:"https://images.unsplash.com/photo-1504384308090-c894fdcc538d",name:"Innovation"},
+{img:"https://images.unsplash.com/photo-1492724441997-5dc865305da7",name:"Fleet"},
+{img:"https://images.unsplash.com/photo-1518770660439-4636190af475",name:"Future"}
+],
+
+shop:[
+{img:"https://images.unsplash.com/photo-1523275335684-37898b6baf30",name:"Accessories"},
+{img:"https://images.unsplash.com/photo-1512499617640-c2f999098c01",name:"Parts"},
+{img:"https://images.unsplash.com/photo-1517336714731-489689fd1ca8",name:"Key Fob"},
+{img:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",name:"Gadgets"},
+{img:"https://images.unsplash.com/photo-1511376777868-611b54f68947",name:"Collections"},
+{img:"https://images.unsplash.com/photo-1520975922284-8b456906c813",name:"Apparel"}
+]
 };
 
 document.querySelectorAll(".nav-item").forEach(item=>{
 item.onclick=item.onmouseenter=()=>{
 let menu=item.dataset.menu;
 content.innerHTML=`<div class="dropdown-grid">
-${menus[menu].map(n=>`
+${menus[menu].map(m=>`
 <div class="dropdown-item">
-<img src="https://picsum.photos/200/150?${menu+n}">
-<p>${menu} ${n}</p>
+<img src="${m.img}">
+<p>${m.name}</p>
 </div>`).join("")}
 </div>`;
 dropdown.classList.add("show");
@@ -201,10 +243,10 @@ function closePopup(){document.getElementById("popup").style.display="none";}
 
 /* TESTIMONIAL */
 const testimonials=[
-"John Smith bought Model 3 – Excellent car",
-"Sarah Johnson invested in Tesla – Great growth",
-"Michael Brown bought Model Y – Very smooth",
-"Ada Okafor bought Cybertruck – Powerful"
+"John Smith bought Model 3 – Excellent performance",
+"Sarah Johnson invested in Tesla – Strong returns",
+"Michael Brown bought Model Y – Smooth driving experience",
+"Ada Okafor bought Cybertruck – Powerful and unique"
 ];
 
 function showTestimonial(){
