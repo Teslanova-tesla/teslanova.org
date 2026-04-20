@@ -85,7 +85,7 @@ opacity:1;
 visibility:visible;
 }
 
-/* 3 x 2 GRID */
+/* GRID */
 .dropdown-grid{
 display:grid;
 grid-template-columns:repeat(3,1fr);
@@ -163,7 +163,6 @@ to{transform:translateX(-120%);opacity:0;}
 
 <body>
 
-<!-- HERO -->
 <header class="hero">
 
 <div class="slider">
@@ -176,7 +175,6 @@ to{transform:translateX(-120%);opacity:0;}
 <h1 id="heroTitle">Model S</h1>
 </div>
 
-<!-- NAV -->
 <div class="navbar">
 <div class="logo">TESLA</div>
 
@@ -189,14 +187,12 @@ to{transform:translateX(-120%);opacity:0;}
 </div>
 </div>
 
-<!-- DROPDOWN -->
 <div id="dropdown" class="dropdown">
 <div id="dropdown-content" class="dropdown-grid"></div>
 </div>
 
 </header>
 
-<!-- CAROUSEL -->
 <section class="car-carousel">
 <h2>Discover Vehicles</h2>
 <div class="carousel-track">
@@ -207,14 +203,12 @@ to{transform:translateX(-120%);opacity:0;}
 </div>
 </section>
 
-<!-- MAP -->
 <section class="map-section">
 <h2>Find Your Location</h2>
 <div id="map"></div>
 <button class="find-btn" onclick="findMe()">Find Me</button>
 </section>
 
-<!-- POPUPS -->
 <div id="toast-container"></div>
 
 <script>
@@ -244,9 +238,7 @@ map.flyTo([lat,lon],14);
 });
 }
 
-/* ========================= */
-/* 🔥 FULL DROPDOWN SYSTEM */
-/* ========================= */
+/* DROPDOWN SYSTEM */
 
 const dropdown=document.getElementById("dropdown");
 const content=document.getElementById("dropdown-content");
@@ -262,17 +254,12 @@ vehicles:[
 ["Roadster","tesla 1.avif"]
 ],
 
-energy: [
+energy:[
 ["Solar Panels","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/23c97c6ef1f2e5c75d0b41d0f743893cef21e23c/IMG_1252.jpeg"],
-
 ["Solar Roof","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/23c97c6ef1f2e5c75d0b41d0f743893cef21e23c/IMG_1251.jpeg"],
-
 ["Powerwall","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/23c97c6ef1f2e5c75d0b41d0f743893cef21e23c/IMG_1250.jpeg"],
-
 ["Battery","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/23c97c6ef1f2e5c75d0b41d0f743893cef21e23c/IMG_1249.jpeg"],
-
 ["Wind","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/23c97c6ef1f2e5c75d0b41d0f743893cef21e23c/IMG_1248.jpeg"],
-
 ["Grid","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/23c97c6ef1f2e5c75d0b41d0f743893cef21e23c/IMG_1252.jpeg"]
 ],
 
@@ -310,12 +297,11 @@ document.querySelectorAll(".nav-item").forEach(item=>{
 function openMenu(){
 let menu=item.dataset.menu;
 let data=menus[menu];
-
 if(!data) return;
 
 content.innerHTML=data.map(m=>`
 <div class="dropdown-item">
-<img src="https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/${m[1]}">
+<img src="${m[1].startsWith('http') ? m[1] : 'https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/'+m[1]}">
 <p>${m[0]}</p>
 </div>
 `).join("");
@@ -334,12 +320,19 @@ dropdown.classList.remove("show");
 }
 });
 
-/* POPUPS */
+/* TESTIMONIALS */
+
 const messages=[
-"John bought Model S + TSLA 📈",
-"Ada invested Cybertruck ⚡",
-"Michael bought Model 3 ☀️",
-"David made profit from Tesla 💰"
+"John bought Model S + TSLA 📈","Ada invested in Solar Panels ☀️","Michael ordered Model 3 🚗","David upgraded to Model X 💰","Sarah installed Powerwall 🔋",
+"Daniel bought Cybertruck ⚡","Grace invested in Tesla Energy 🌍","Chris purchased Model Y 🚘","Emma joined Tesla investors 📊","Liam bought Model S Plaid 🔥",
+"Noah installed Solar Roof ☀️","Olivia invested in Tesla stock 📈","James ordered Model 3 Performance 🚗","Lucas bought Model X 🖤","Mia installed Powerwall 🔋",
+"Ethan invested in energy grid ⚡","Charlotte bought Model Y 🚘","Benjamin ordered Cybertruck ⚡","Amelia invested in Tesla 💰","Henry upgraded to Model S 🔥",
+"Evelyn installed solar panels ☀️","Alexander bought Model 3 🚗","Harper invested in Tesla shares 📊","Jack purchased Model X 🖤","Abigail installed Powerwall 🔋",
+"Sebastian bought Cybertruck ⚡","Emily invested in Tesla energy 🌍","Matthew ordered Model Y 🚘","Scarlett bought Model S 🔥","Daniel joined Tesla investors 📈",
+"Avery installed Solar Roof ☀️","Joseph bought Model 3 🚗","Sofia invested in Tesla stock 📊","Samuel purchased Model X 🖤","Victoria installed Powerwall 🔋",
+"David upgraded to Cybertruck ⚡","Aria invested in energy systems 🌍","Carter bought Model Y 🚘","Chloe purchased Model S 🔥","Wyatt joined Tesla investors 📈",
+"Zoey installed solar panels ☀️","Isaac bought Model 3 🚗","Lily invested in Tesla 📊","Gabriel purchased Model X 🖤","Hannah installed Powerwall 🔋",
+"Anthony bought Cybertruck ⚡","Nora invested in Tesla energy 🌍","Julian ordered Model Y 🚘","Leah bought Model S 🔥","Ryan joined Tesla investors 📈"
 ];
 
 const container=document.getElementById("toast-container");
