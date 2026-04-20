@@ -12,14 +12,14 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;}
 body{overflow-x:hidden;background:#fff;}
 
-/* HERO SLIDER */
+/* HERO */
 .hero{position:relative;height:100vh;}
 .slider,.slide{position:absolute;width:100%;height:100%;}
 .slide{opacity:0;transition:1s;background-size:cover;background-position:center;}
 .slide.active{opacity:1;}
 .hero-content{position:absolute;top:22%;width:100%;text-align:center;color:#fff;z-index:5;}
 
-/* NAVBAR FIX (MOBILE SAFE) */
+/* NAVBAR FIX */
 .navbar{
 position:fixed;
 top:0;
@@ -27,39 +27,41 @@ width:100%;
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:18px 6vw;
+padding:18px 4vw;
 background:#fff;
 z-index:9999;
-gap:30px;
+flex-wrap:wrap;
 }
 
 .logo{
 font-weight:bold;
 letter-spacing:3px;
-margin-right:40px; /* ✅ SPACE FROM MENU */
-flex-shrink:0;
+margin-right:10px;
+white-space:nowrap;
 }
 
 .nav-center{
-position:absolute;
-left:50%;
-transform:translateX(-50%);
 display:flex;
-gap:25px;
-flex-wrap:nowrap;
+gap:18px;
+flex-wrap:wrap;
+justify-content:center;
+width:100%;
+margin-top:10px;
 }
 
 .nav-item{cursor:pointer;font-size:14px;}
 
-/* MOBILE FIX */
+/* MOBILE */
 @media(max-width:768px){
+.navbar{
+flex-direction:column;
+align-items:flex-start;
+}
 .nav-center{
+justify-content:flex-start;
 gap:12px;
-font-size:12px;
 }
-.logo{
-margin-right:20px;
-}
+.logo{margin-bottom:10px;}
 }
 
 /* DROPDOWN */
@@ -72,7 +74,6 @@ visibility:hidden;
 transition:0.3s;
 z-index:9998;
 }
-
 .dropdown.show{
 opacity:1;
 visibility:visible;
@@ -80,7 +81,6 @@ background:rgba(245,245,245,0.95);
 backdrop-filter:blur(25px);
 padding-top:90px;
 }
-
 .dropdown-grid{
 display:grid;
 grid-template-columns:repeat(3,1fr);
@@ -89,7 +89,6 @@ padding:40px 5vw;
 max-width:1100px;
 margin:auto;
 }
-
 .dropdown-item{text-align:center;}
 .dropdown-item img{
 width:100%;
@@ -111,46 +110,11 @@ object-fit:contain;
 /* FOOTER */
 .footer{text-align:center;padding:40px 20px;font-size:12px;color:#666;}
 .footer-links{display:flex;justify-content:center;gap:15px;margin-top:10px;}
-
-/* TESTIMONIALS */
-#testimonialContainer{
-position:fixed;
-left:15px;
-bottom:20px;
-z-index:99990;
-display:flex;
-flex-direction:column;
-gap:10px;
-}
-
-.testimonial{
-background:#111;
-color:#fff;
-padding:12px;
-border-radius:12px;
-font-size:13px;
-max-width:280px;
-opacity:0;
-transform:scale(0.6) translateY(40px);
-transition:0.5s;
-}
-
-.testimonial.show{
-opacity:1;
-transform:scale(1) translateY(0);
-}
-
-.testimonial.hide{
-opacity:0;
-transform:scale(0.8) translateY(20px);
-}
-
 </style>
 </head>
 
 <body>
 
-<!-- HERO -->
 <header class="hero">
 
 <div class="slider">
@@ -163,7 +127,6 @@ transform:scale(0.8) translateY(20px);
 <h1 id="heroTitle">Model S</h1>
 </div>
 
-<!-- NAV -->
 <div class="navbar">
 <div class="logo">TESLA</div>
 
@@ -182,7 +145,6 @@ transform:scale(0.8) translateY(20px);
 
 </header>
 
-<!-- CAROUSEL -->
 <section class="car-carousel">
 <h2>Discover Vehicles</h2>
 <div class="carousel-track">
@@ -193,14 +155,12 @@ transform:scale(0.8) translateY(20px);
 </div>
 </section>
 
-<!-- MAP -->
 <section class="map-section">
 <h2>Find Your Location</h2>
 <div id="map"></div>
 <button class="find-btn" onclick="findMe()">Find Me</button>
 </section>
 
-<!-- FOOTER -->
 <footer class="footer">
 Tesla © 2026
 <div class="footer-links">
@@ -208,16 +168,12 @@ Tesla © 2026
 </div>
 </footer>
 
-<!-- TESTIMONIALS -->
-<div id="testimonialContainer"></div>
-
 <script>
 
 /* SLIDER */
 let slides=document.querySelectorAll(".slide");
 let title=document.getElementById("heroTitle");
 let i=0;
-
 setInterval(()=>{
 slides[i].classList.remove("active");
 i=(i+1)%slides.length;
@@ -228,7 +184,6 @@ title.textContent=slides[i].dataset.title;
 /* MAP */
 let map=L.map("map").setView([20,0],2);
 L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png").addTo(map);
-
 function findMe(){
 navigator.geolocation.getCurrentPosition(pos=>{
 let lat=pos.coords.latitude;
@@ -238,7 +193,7 @@ map.flyTo([lat,lon],14);
 });
 }
 
-/* DROPDOWN FIX */
+/* DROPDOWN SYSTEM */
 const dropdown=document.getElementById("dropdown");
 const content=document.getElementById("dropdown-content");
 
@@ -250,16 +205,53 @@ vehicles:[
 {img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla3.avif",name:"Model Y"},
 {img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/cyber%20truck.jpg",name:"Cybertruck"},
 {img:"https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/main/tesla%201.avif",name:"Roadster"}
+],
+
+energy:[
+{img:"https://upload.wikimedia.org/wikipedia/commons/3/3a/Solar_panels_on_roof.jpg",name:"Solar Panels"},
+{img:"https://upload.wikimedia.org/wikipedia/commons/5/5e/Solar_roof_house.jpg",name:"Solar Roof"},
+{img:"https://upload.wikimedia.org/wikipedia/commons/9/9e/Tesla_Powerwall.jpg",name:"Powerwall"},
+{img:"https://upload.wikimedia.org/wikipedia/commons/2/2c/Battery_storage_system.jpg",name:"Energy Storage"},
+{img:"https://upload.wikimedia.org/wikipedia/commons/0/0c/Wind_turbine_field.jpg",name:"Wind Energy"},
+{img:"https://upload.wikimedia.org/wikipedia/commons/8/8e/Smart_grid.png",name:"Smart Grid"}
+],
+
+charging:[
+{img:"https://upload.wikimedia.org/wikipedia/commons/5/5b/Tesla_Supercharger.jpg",name:"Supercharger"},
+{img:"https://upload.wikimedia.org/wikipedia/commons/3/3e/Electric_car_charging.jpg",name:"Home Charging"},
+{img:"https://upload.wikimedia.org/wikipedia/commons/6/6d/EV_charging_station.jpg",name:"Charging Station"},
+{img:"https://upload.wikimedia.org/wikipedia/commons/0/0d/Electric_vehicle_charger_wall.jpg",name:"Wall Connector"},
+{img:"https://upload.wikimedia.org/wikipedia/commons/4/4f/Charging_cable_EV.jpg",name:"Charging Cables"},
+{img:"https://upload.wikimedia.org/wikipedia/commons/1/1e/EV_plug.jpg",name:"Connectors"}
+],
+
+discover:[
+{img:"https://upload.wikimedia.org/wikipedia/commons/3/3f/Autopilot_car.jpg",name:"Autopilot"},
+{img:"https://upload.wikimedia.org/wikipedia/commons/6/6b/Car_interior_digital_display.jpg",name:"Interior Tech"},
+{img:"https://upload.wikimedia.org/wikipedia/commons/7/7d/Electric_car_dashboard.jpg",name:"Software"},
+{img:"https://upload.wikimedia.org/wikipedia/commons/2/2e/EV_fleet.jpg",name:"Fleet"},
+{img:"https://upload.wikimedia.org/wikipedia/commons/8/8a/Charging_network_map.jpg",name:"Network"},
+{img:"https://upload.wikimedia.org/wikipedia/commons/9/9d/Future_transport.jpg",name:"Future Mobility"}
+],
+
+shop:[
+{img:"https://upload.wikimedia.org/wikipedia/commons/5/5c/Car_accessories.jpg",name:"Accessories"},
+{img:"https://upload.wikimedia.org/wikipedia/commons/3/31/Car_parts.jpg",name:"Parts"},
+{img:"https://upload.wikimedia.org/wikipedia/commons/1/1a/Key_fob_car.jpg",name:"Key Fob"},
+{img:"https://upload.wikimedia.org/wikipedia/commons/4/4e/EV_gadgets.jpg",name:"Gadgets"},
+{img:"https://upload.wikimedia.org/wikipedia/commons/8/8f/Tech_store_products.jpg",name:"Collections"},
+{img:"https://upload.wikimedia.org/wikipedia/commons/2/2a/Tesla_merchandise.jpg",name:"Apparel"}
 ]
 };
 
 document.querySelectorAll(".nav-item").forEach(item=>{
-item.addEventListener("mouseenter",()=>{
-let menu=item.dataset.menu;
+item.addEventListener("mouseenter",showMenu);
+item.addEventListener("click",showMenu);
 
+function showMenu(){
+let menu=item.dataset.menu;
 if(menus[menu]){
-content.innerHTML=`
-<div class="dropdown-grid">
+content.innerHTML=`<div class="dropdown-grid">
 ${menus[menu].map(m=>`
 <div class="dropdown-item">
 <img src="${m.img}">
@@ -267,9 +259,8 @@ ${menus[menu].map(m=>`
 </div>`).join("")}
 </div>`;
 }
-
 dropdown.classList.add("show");
-});
+}
 });
 
 document.addEventListener("click",(e)=>{
@@ -277,42 +268,6 @@ if(!e.target.closest(".nav-item")){
 dropdown.classList.remove("show");
 }
 });
-
-/* TESTIMONIALS (REALISTIC FORMAT) */
-const testimonials=[
-"John Smith bought Model 3 – 'Smooth ride and worth every dollar'",
-"Sarah Johnson invested in Tesla stock – 'Long-term confidence is strong'",
-"Michael Brown purchased Model Y – 'Perfect family car, very efficient'",
-"Ada Okafor bought Cybertruck – 'Bold design, powerful performance'",
-"David Williams invested in TSLA – 'Consistent growth over time'",
-"Emily Davis bought Model S – 'Luxury feel and incredible speed'"
-];
-
-let used=[];
-
-function showTestimonial(){
-if(used.length===testimonials.length) used=[];
-
-let available=testimonials.filter(t=>!used.includes(t));
-let text=available[Math.floor(Math.random()*available.length)];
-used.push(text);
-
-let el=document.createElement("div");
-el.className="testimonial";
-el.innerText=text;
-
-document.getElementById("testimonialContainer").appendChild(el);
-
-setTimeout(()=>el.classList.add("show"),100);
-
-setTimeout(()=>{
-el.classList.remove("show");
-el.classList.add("hide");
-setTimeout(()=>el.remove(),500);
-},5000);
-}
-
-setInterval(showTestimonial,6000);
 
 </script>
 
