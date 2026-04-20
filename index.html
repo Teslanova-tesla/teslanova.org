@@ -17,50 +17,86 @@ body{overflow-x:hidden;background:#fff;}
 .slider,.slide{position:absolute;width:100%;height:100%;}
 .slide{opacity:0;transition:1s;background-size:cover;background-position:center;z-index:1;}
 .slide.active{opacity:1;}
-.hero-content{position:absolute;top:22%;width:100%;text-align:center;color:#fff;z-index:2;}
+
+.hero-content{
+position:absolute;
+top:22%;
+width:100%;
+text-align:center;
+color:#fff;
+z-index:2;
+}
 
 /* NAVBAR */
 .navbar{
-position:fixed;top:0;width:100%;
-display:flex;align-items:center;justify-content:space-between;
-padding:18px 4vw;background:#fff;z-index:1000000;flex-wrap:wrap;
+position:fixed;
+top:0;
+width:100%;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:18px 4vw;
+background:#fff;
+z-index:1000000;
+flex-wrap:wrap;
 }
 
 .logo{font-weight:bold;letter-spacing:3px;}
 
 .nav-center{
-display:flex;gap:18px;flex-wrap:wrap;
-justify-content:center;width:100%;margin-top:10px;
+display:flex;
+gap:18px;
+flex-wrap:wrap;
+justify-content:center;
+width:100%;
+margin-top:10px;
 }
 
 .nav-item{cursor:pointer;font-size:14px;}
 
 /* DROPDOWN */
 .dropdown{
-position:fixed;top:0;left:0;width:100%;
-opacity:0;visibility:hidden;transition:0.3s;
-z-index:999999;background:rgba(255,255,255,0.95);
-backdrop-filter:blur(20px);padding-top:90px;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+opacity:0;
+visibility:hidden;
+transition:0.3s;
+z-index:999999;
+background:rgba(255,255,255,0.95);
+backdrop-filter:blur(20px);
+padding-top:90px;
 }
 
-.dropdown.show{opacity:1;visibility:visible;}
+.dropdown.show{
+opacity:1;
+visibility:visible;
+}
 
 .dropdown-grid{
 display:grid;
 grid-template-columns:repeat(3,1fr);
 grid-template-rows:repeat(2,1fr);
-gap:20px;padding:40px 5vw;
-max-width:1100px;margin:auto;
+gap:20px;
+padding:40px 5vw;
+max-width:1100px;
+margin:auto;
 }
 
 .dropdown-item{text-align:center;cursor:pointer;}
 
 .dropdown-item img{
-width:100%;height:120px;
-object-fit:cover;border-radius:10px;
+width:100%;
+height:120px;
+object-fit:cover;
+border-radius:10px;
 }
 
-.dropdown-item p{margin-top:8px;font-size:13px;}
+.dropdown-item p{
+margin-top:8px;
+font-size:13px;
+}
 
 /* CAROUSEL */
 .car-carousel{padding:60px 5vw;}
@@ -75,17 +111,27 @@ object-fit:cover;border-radius:10px;
 
 /* TOAST */
 #toast-container{
-position:fixed;bottom:20px;left:20px;
-display:flex;flex-direction:column;gap:10px;
-z-index:99950;pointer-events:none;
+position:fixed;
+bottom:20px;
+left:20px;
+display:flex;
+flex-direction:column;
+gap:10px;
+z-index:99950;
+pointer-events:none;
 }
 
 .toast{
-min-width:260px;max-width:300px;
+min-width:260px;
+max-width:300px;
 background:rgba(20,20,20,0.92);
-color:#fff;padding:12px;border-radius:14px;
-transform:translateX(-120%);opacity:0;
-animation:slideIn 0.6s forwards;font-size:13px;
+color:#fff;
+padding:12px;
+border-radius:14px;
+transform:translateX(-120%);
+opacity:0;
+animation:slideIn 0.6s forwards;
+font-size:13px;
 }
 
 .toast b{color:#00ffcc;display:block;margin-bottom:4px;}
@@ -127,6 +173,7 @@ animation:slideIn 0.6s forwards;font-size:13px;
 
 </header>
 
+<!-- CAROUSEL -->
 <section class="car-carousel">
 <h2>Discover Vehicles</h2>
 <div class="carousel-track">
@@ -137,6 +184,7 @@ animation:slideIn 0.6s forwards;font-size:13px;
 </div>
 </section>
 
+<!-- MAP -->
 <section class="map-section">
 <h2>Find Your Location</h2>
 <div id="map"></div>
@@ -172,7 +220,7 @@ map.flyTo([lat,lon],14);
 });
 }
 
-/* DROPDOWN DATA */
+/* DROPDOWN */
 const dropdown=document.getElementById("dropdown");
 const content=document.getElementById("dropdown-content");
 
@@ -206,26 +254,26 @@ charging:[
 ],
 
 discover:[
-["Autopilot","auto.jpg"],
-["Interior","interior.jpg"],
-["Software","soft.jpg"],
-["Fleet","fleet.jpg"],
-["Network","network.jpg"],
-["Future","future.jpg"]
+["Autopilot","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/fd3ce3c2f9c1d8f60b2ba1cd6cece8569115f716/IMG_1249.jpeg"],
+["Interior","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/fd3ce3c2f9c1d8f60b2ba1cd6cece8569115f716/IMG_1241.jpeg"],
+["Software","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/fd3ce3c2f9c1d8f60b2ba1cd6cece8569115f716/IMG_1240.jpeg"],
+["Fleet","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/fd3ce3c2f9c1d8f60b2ba1cd6cece8569115f716/IMG_1239.jpeg"],
+["Network","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/fd3ce3c2f9c1d8f60b2ba1cd6cece8569115f716/IMG_1248.jpeg"],
+["Future","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/fd3ce3c2f9c1d8f60b2ba1cd6cece8569115f716/IMG_1249.jpeg"]
 ],
 
 shop:[
-["Accessories","acc.jpg"],
-["Parts","parts.jpg"],
-["Key","key.jpg"],
-["Gadgets","gadgets.jpg"],
-["Collection","collection.jpg"],
-["Apparel","apparel.jpg"]
+["Accessories","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/fd3ce3c2f9c1d8f60b2ba1cd6cece8569115f716/IMG_1241.jpeg"],
+["Parts","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/fd3ce3c2f9c1d8f60b2ba1cd6cece8569115f716/IMG_1240.jpeg"],
+["Key","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/fd3ce3c2f9c1d8f60b2ba1cd6cece8569115f716/IMG_1239.jpeg"],
+["Gadgets","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/fd3ce3c2f9c1d8f60b2ba1cd6cece8569115f716/IMG_1248.jpeg"],
+["Collection","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/fd3ce3c2f9c1d8f60b2ba1cd6cece8569115f716/IMG_1249.jpeg"],
+["Apparel","https://raw.githubusercontent.com/Teslanova-tesla/teslanova.org/fd3ce3c2f9c1d8f60b2ba1cd6cece8569115f716/IMG_1241.jpeg"]
 ]
 
 };
 
-/* RENDER DROPDOWN */
+/* RENDER */
 document.querySelectorAll(".nav-item").forEach(item=>{
 function openMenu(){
 let data=menus[item.dataset.menu];
@@ -248,17 +296,8 @@ document.addEventListener("click",e=>{
 if(!e.target.closest(".nav-item")) dropdown.classList.remove("show");
 });
 
-/* 50 TESTIMONIALS */
-const messages=[
-"User 1 invested in Tesla 🚀","User 2 bought Model S","User 3 installed Solar Panels",
-"User 4 upgraded to Cybertruck","User 5 invested in TSLA","User 6 joined Tesla Energy",
-"User 7 bought Model 3","User 8 installed Powerwall","User 9 invested in Solar Roof",
-"User 10 bought Model X","User 11 invested in Grid","User 12 upgraded Tesla system",
-"User 13 bought Model Y","User 14 joined investors","User 15 invested in Tesla stock",
-"User 16 bought Cybertruck","User 17 installed charger","User 18 upgraded energy system",
-"User 19 invested in Solar","User 20 bought Model S",
-...Array.from({length:30},(_,i)=>`User ${i+21} invested in Tesla ⚡`)
-];
+/* TOASTS */
+const messages=Array.from({length:50},(_,i)=>`User ${i+1} invested in Tesla ⚡`);
 
 const container=document.getElementById("toast-container");
 
